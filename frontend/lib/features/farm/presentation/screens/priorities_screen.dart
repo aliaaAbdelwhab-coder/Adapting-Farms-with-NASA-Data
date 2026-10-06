@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../widgets/farm_setup_header.dart';
+import '../../../../core/routing/app_router.dart';
 
 class PrioritiesScreen extends StatelessWidget {
   const PrioritiesScreen({super.key});
@@ -108,8 +109,11 @@ SizedBox(
   width: double.infinity,
   child: FilledButton(
     onPressed: () {
-      // TODO: Continue to NASA environment step.
-    },
+  Navigator.pushNamed(
+    context,
+    AppRouter.environment,
+  );
+},
     child: const Padding(
       padding: EdgeInsets.symmetric(vertical: 4),
       child: Text('Generate NASA Environment'),
