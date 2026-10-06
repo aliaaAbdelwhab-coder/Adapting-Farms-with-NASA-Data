@@ -3,9 +3,30 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/routing/app_router.dart';
+import '../../data/models/farm_profile_model.dart';
 
-class FarmProfileForm extends StatelessWidget {
+class FarmProfileForm extends StatefulWidget {
   const FarmProfileForm({super.key});
+
+  @override
+  State<FarmProfileForm> createState() => _FarmProfileFormState();
+}
+
+class _FarmProfileFormState extends State<FarmProfileForm> {
+  final _farmNameController = TextEditingController();
+  final _locationController = TextEditingController();
+  final _cultivatedAreaController = TextEditingController();
+  String? _selectedSoilType;
+  String? _selectedCrop;
+  String? _selectedWaterSource;
+
+  @override
+  void dispose() {
+    _farmNameController.dispose();
+    _locationController.dispose();
+    _cultivatedAreaController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +36,7 @@ class FarmProfileForm extends StatelessWidget {
 
         return Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 760,
-            ),
+            constraints: const BoxConstraints(maxWidth: 760),
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: isMobile ? 20 : 32,
@@ -27,34 +46,34 @@ class FarmProfileForm extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-  children: [
-    Text(
-      'Step 1 of 4',
-      style: AppTextStyles.body.copyWith(
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryGreen,
-      ),
-    ),
-    const Spacer(),
-    Text(
-      '25% Complete',
-      style: AppTextStyles.caption.copyWith(
-        color: AppColors.textSecondary,
-      ),
-    ),
-  ],
-),
-const SizedBox(height: 10),
-ClipRRect(
-  borderRadius: BorderRadius.circular(999),
-  child: LinearProgressIndicator(
-    value: 0.25,
-    minHeight: 6,
-    backgroundColor: AppColors.borderSlate,
-    color: AppColors.primaryGreen,
-  ),
-),
-const SizedBox(height: 32),
+                    children: [
+                      Text(
+                        'Step 1 of 4',
+                        style: AppTextStyles.body.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryGreen,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '25% Complete',
+                        style: AppTextStyles.caption.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: LinearProgressIndicator(
+                      value: 0.25,
+                      minHeight: 6,
+                      backgroundColor: AppColors.borderSlate,
+                      color: AppColors.primaryGreen,
+                    ),
+                  ),
+                  const SizedBox(height: 32),
                   Text(
                     'Set Up Your Farm Profile',
                     style: AppTextStyles.h1.copyWith(
@@ -70,99 +89,171 @@ const SizedBox(height: 32),
                   ),
                   const SizedBox(height: 32),
 
-if (isMobile) ...[
-  const _FarmTextField(
-    label: 'Farm Name',
-    hintText: 'Enter your farm name',
-  ),
-  const SizedBox(height: 20),
-  const _FarmTextField(
-    label: 'Location',
-    hintText: 'Enter your farm location',
-  ),
-  const SizedBox(height: 20),
-  const _FarmTextField(
-    label: 'Cultivated Area',
-    hintText: 'Enter cultivated area',
-    suffixText: 'Acres',
-  ),
-  const SizedBox(height: 20),
-  const _SoilTypeDropdown(),
-  const SizedBox(height: 20),
-const _CurrentCropDropdown(),
-const SizedBox(height: 20),
-const _WaterSourceDropdown(),
-] else ...[
-  const Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-        child: _FarmTextField(
-          label: 'Farm Name',
-          hintText: 'Enter your farm name',
-        ),
-      ),
-      SizedBox(width: 20),
-      Expanded(
-        child: _FarmTextField(
-          label: 'Location',
-          hintText: 'Enter your farm location',
-        ),
-      ),
-    ],
-  ),
-  const SizedBox(height: 20),
-  const Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-        child: _FarmTextField(
-          label: 'Cultivated Area',
-          hintText: 'Enter cultivated area',
-          suffixText: 'Acres',
-        ),
-      ),
-      SizedBox(width: 20),
-      Expanded(
-        child: _SoilTypeDropdown(),
-      ),
-    ],
-  ),
- const SizedBox(height: 20),
-const Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Expanded(
-      child: _CurrentCropDropdown(),
-    ),
-    SizedBox(width: 20),
-    Expanded(
-      child: _WaterSourceDropdown(),
-    ),
-  ],
-),
-],
-                const SizedBox(height: 32),
+                  if (isMobile) ...[
+                    _FarmTextField(
+                      label: 'Farm Name',
+                      hintText: 'Enter your farm name',
+                      controller: _farmNameController,
+                    ),
+                    const SizedBox(height: 20),
+                    _FarmTextField(
+                      label: 'Location',
+                      hintText: 'Enter your farm location',
+                      controller: _locationController,
+                    ),
+                    const SizedBox(height: 20),
+                    _FarmTextField(
+                      label: 'Cultivated Area',
+                      hintText: 'Enter cultivated area',
+                      controller: _cultivatedAreaController,
+                      suffixText: 'Acres',
+                    ),
+                    const SizedBox(height: 20),
+                    _SoilTypeDropdown(
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedSoilType = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _CurrentCropDropdown(
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCrop = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    _WaterSourceDropdown(
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedWaterSource = value;
+                        });
+                      },
+                    ),
+                  ] else ...[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _FarmTextField(
+                            label: 'Farm Name',
+                            hintText: 'Enter your farm name',
+                            controller: _farmNameController,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: _FarmTextField(
+                            label: 'Location',
+                            hintText: 'Enter your farm location',
+                            controller: _locationController,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _FarmTextField(
+                            label: 'Cultivated Area',
+                            hintText: 'Enter cultivated area',
+                            controller: _cultivatedAreaController,
+                            suffixText: 'Acres',
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: _SoilTypeDropdown(
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedSoilType = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: _CurrentCropDropdown(
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedCrop = value;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: _WaterSourceDropdown(
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedWaterSource = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  const SizedBox(height: 32),
 
-SizedBox(
-  width: double.infinity,
-  child: FilledButton(
-   onPressed: () {
-  Navigator.pushNamed(
-    context,
-    AppRouter.priorities,
-  );
-},
-    child: const Padding(
-      padding: EdgeInsets.symmetric(vertical: 4),
-      child: Text('Continue to Priorities'),
-    ),
-  ),
-),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: () {
+                        final cultivatedArea = double.tryParse(
+                          _cultivatedAreaController.text.trim(),
+                        );
 
-const SizedBox(height: 24),    
+                        if (_farmNameController.text.trim().isEmpty ||
+                            _locationController.text.trim().isEmpty ||
+                            cultivatedArea == null ||
+                            cultivatedArea <= 0 ||
+                            _selectedSoilType == null ||
+                            _selectedCrop == null ||
+                            _selectedWaterSource == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please complete all farm profile fields correctly.',
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+
+                        final farmProfile = FarmProfileModel(
+                          farmName: _farmNameController.text.trim(),
+                          location: _locationController.text.trim(),
+                          cultivatedArea: cultivatedArea,
+                          soilType: _selectedSoilType!,
+                          currentCrop: _selectedCrop!,
+                          waterSource: _selectedWaterSource!,
+                        );
+
+                        Navigator.pushNamed(
+                          context,
+                          AppRouter.priorities,
+                          arguments: farmProfile,
+                        );
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 4),
+                        child: Text('Continue to Priorities'),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
                 ],
-                
               ),
             ),
           ),
@@ -176,11 +267,13 @@ class _FarmTextField extends StatelessWidget {
   const _FarmTextField({
     required this.label,
     required this.hintText,
+    this.controller,
     this.suffixText,
   });
 
   final String label;
   final String hintText;
+  final TextEditingController? controller;
   final String? suffixText;
   @override
   Widget build(BuildContext context) {
@@ -196,31 +289,35 @@ class _FarmTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller: controller,
           decoration: InputDecoration(
-  hintText: hintText,
-  suffixIcon: suffixText == null
-    ? null
-    : Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Center(
-          widthFactor: 1,
-          child: Text(
-            suffixText!,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w600,
-            ),
+            hintText: hintText,
+            suffixIcon: suffixText == null
+                ? null
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Center(
+                      widthFactor: 1,
+                      child: Text(
+                        suffixText!,
+                        style: AppTextStyles.body.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
           ),
-        ),
-      ),
-),
         ),
       ],
     );
   }
 }
+
 class _SoilTypeDropdown extends StatefulWidget {
-  const _SoilTypeDropdown();
+  const _SoilTypeDropdown({required this.onChanged});
+
+  final ValueChanged<String?> onChanged;
 
   @override
   State<_SoilTypeDropdown> createState() => _SoilTypeDropdownState();
@@ -229,11 +326,7 @@ class _SoilTypeDropdown extends StatefulWidget {
 class _SoilTypeDropdownState extends State<_SoilTypeDropdown> {
   String? selectedSoilType;
 
-  static const List<String> soilTypes = [
-    'Loam',
-    'Clay',
-    'Sandy Loam',
-  ];
+  static const List<String> soilTypes = ['Loam', 'Clay', 'Sandy Loam'];
 
   @override
   Widget build(BuildContext context) {
@@ -252,9 +345,7 @@ class _SoilTypeDropdownState extends State<_SoilTypeDropdown> {
           initialValue: selectedSoilType,
           hint: Text(
             'Select soil type',
-            style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.textMuted,
-            ),
+            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textMuted),
           ),
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
@@ -270,29 +361,28 @@ class _SoilTypeDropdownState extends State<_SoilTypeDropdown> {
             setState(() {
               selectedSoilType = value;
             });
+
+            widget.onChanged(value);
           },
         ),
       ],
     );
   }
 }
+
 class _CurrentCropDropdown extends StatefulWidget {
-  const _CurrentCropDropdown();
+  const _CurrentCropDropdown({required this.onChanged});
+
+  final ValueChanged<String?> onChanged;
 
   @override
-  State<_CurrentCropDropdown> createState() =>
-      _CurrentCropDropdownState();
+  State<_CurrentCropDropdown> createState() => _CurrentCropDropdownState();
 }
 
 class _CurrentCropDropdownState extends State<_CurrentCropDropdown> {
   String? selectedCrop;
 
-  static const List<String> crops = [
-    'Corn',
-    'Wheat',
-    'Soybean',
-    'Rice',
-  ];
+  static const List<String> crops = ['Corn', 'Wheat', 'Soybean', 'Rice'];
 
   @override
   Widget build(BuildContext context) {
@@ -311,46 +401,41 @@ class _CurrentCropDropdownState extends State<_CurrentCropDropdown> {
           initialValue: selectedCrop,
           hint: Text(
             'Select current crop',
-            style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.textMuted,
-            ),
+            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textMuted),
           ),
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.textSecondary,
           ),
           items: crops.map((crop) {
-            return DropdownMenuItem<String>(
-              value: crop,
-              child: Text(crop),
-            );
+            return DropdownMenuItem<String>(value: crop, child: Text(crop));
           }).toList(),
           onChanged: (value) {
             setState(() {
               selectedCrop = value;
             });
+
+            widget.onChanged(value);
           },
         ),
       ],
     );
   }
 }
+
 class _WaterSourceDropdown extends StatefulWidget {
-  const _WaterSourceDropdown();
+  const _WaterSourceDropdown({required this.onChanged});
+
+  final ValueChanged<String?> onChanged;
 
   @override
-  State<_WaterSourceDropdown> createState() =>
-      _WaterSourceDropdownState();
+  State<_WaterSourceDropdown> createState() => _WaterSourceDropdownState();
 }
 
 class _WaterSourceDropdownState extends State<_WaterSourceDropdown> {
   String? selectedWaterSource;
 
-  static const List<String> waterSources = [
-    'Irrigated',
-    'Rain-fed',
-    'Mixed',
-  ];
+  static const List<String> waterSources = ['Irrigated', 'Rain-fed', 'Mixed'];
 
   @override
   Widget build(BuildContext context) {
@@ -369,24 +454,21 @@ class _WaterSourceDropdownState extends State<_WaterSourceDropdown> {
           initialValue: selectedWaterSource,
           hint: Text(
             'Select water source',
-            style: AppTextStyles.bodyLarge.copyWith(
-              color: AppColors.textMuted,
-            ),
+            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textMuted),
           ),
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.textSecondary,
           ),
           items: waterSources.map((source) {
-            return DropdownMenuItem<String>(
-              value: source,
-              child: Text(source),
-            );
+            return DropdownMenuItem<String>(value: source, child: Text(source));
           }).toList(),
           onChanged: (value) {
             setState(() {
               selectedWaterSource = value;
             });
+
+            widget.onChanged(value);
           },
         ),
       ],

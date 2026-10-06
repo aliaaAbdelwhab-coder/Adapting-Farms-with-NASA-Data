@@ -4,9 +4,23 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../widgets/farm_setup_header.dart';
 import '../../../../core/routing/app_router.dart';
+import '../../data/models/farm_profile_model.dart';
+import '../../data/models/farm_priorities_model.dart';
 
-class PrioritiesScreen extends StatelessWidget {
-  const PrioritiesScreen({super.key});
+class PrioritiesScreen extends StatefulWidget {
+  const PrioritiesScreen({super.key, required this.farmProfile});
+
+  final FarmProfileModel farmProfile;
+
+  @override
+  State<PrioritiesScreen> createState() => _PrioritiesScreenState();
+}
+
+class _PrioritiesScreenState extends State<PrioritiesScreen> {
+  bool _waterEfficiency = false;
+  bool _soilHealth = false;
+  bool _climateResilience = false;
+  bool _yieldStability = false;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +29,7 @@ class PrioritiesScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            FarmSetupHeader(
-              onBack: () => Navigator.pop(context),
-            ),
+            FarmSetupHeader(onBack: () => Navigator.pop(context)),
             Expanded(
               child: SingleChildScrollView(
                 child: Center(
@@ -60,10 +72,7 @@ class PrioritiesScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 32),
-                          Text(
-                            'Set Your Priorities',
-                            style: AppTextStyles.h1,
-                          ),
+                          Text('Set Your Priorities', style: AppTextStyles.h1),
                           const SizedBox(height: 8),
                           Text(
                             'Tell us what matters most for your farm.',
@@ -73,55 +82,89 @@ class PrioritiesScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 32),
 
-const _PriorityCard(
-  icon: Icons.water_drop_outlined,
-  title: 'Water Efficiency',
-  description: 'Prioritize strategies that use water more efficiently.',
-),
+                          _PriorityCard(
+                            icon: Icons.water_drop_outlined,
+                            title: 'Water Efficiency',
+                            description: 'Prioritize strategies that use water more efficiently.',
+                            isSelected: _waterEfficiency,
+                            onTap: () {
+                              setState(() {
+                                _waterEfficiency = !_waterEfficiency;
+                              });
+                            },
+                          ),
 
-const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-const _PriorityCard(
-  icon: Icons.eco_outlined,
-  title: 'Soil Health',
-  description: 'Prioritize rotations that support healthier soil.',
-),
+                          _PriorityCard(
+                            icon: Icons.eco_outlined,
+                            title: 'Soil Health',
+                            description: 'Prioritize rotations that support healthier soil.',
+                            isSelected: _soilHealth,
+                            onTap: () {
+                              setState(() {
+                                _soilHealth = !_soilHealth;
+                              });
+                            },
+                          ),
 
-const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-const _PriorityCard(
-  icon: Icons.shield_outlined,
-  title: 'Climate Resilience',
-  description: 'Prioritize strategies that improve resilience to climate stress.',
-),
+                          _PriorityCard(
+                            icon: Icons.shield_outlined,
+                            title: 'Climate Resilience',
+                            description: 'Prioritize strategies that improve resilience to climate stress.',
+                            isSelected: _climateResilience,
+                            onTap: () {
+                              setState(() {
+                                _climateResilience = !_climateResilience;
+                              });
+                            },
+                          ),
 
-const SizedBox(height: 16),
+                          const SizedBox(height: 16),
 
-const _PriorityCard(
-  icon: Icons.trending_up_rounded,
-  title: 'Yield Stability',
-  description: 'Prioritize consistent and reliable crop performance.',
-),
+                          _PriorityCard(
+                            icon: Icons.trending_up_rounded,
+                            title: 'Yield Stability',
+                            description: 'Prioritize consistent and reliable crop performance.',
+                            isSelected: _yieldStability,
+                            onTap: () {
+                              setState(() {
+                                _yieldStability = !_yieldStability;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 32),
 
-const SizedBox(height: 32),
+                          SizedBox(
+                            width: double.infinity,
+                            child: FilledButton(
+                              onPressed: () {
+                                final farmPriorities = FarmPrioritiesModel(
+                                  waterEfficiency: _waterEfficiency,
+                                  soilHealth: _soilHealth,
+                                  climateResilience: _climateResilience,
+                                  yieldStability: _yieldStability,
+                                );
 
-SizedBox(
-  width: double.infinity,
-  child: FilledButton(
-    onPressed: () {
-  Navigator.pushNamed(
-    context,
-    AppRouter.environment,
-  );
-},
-    child: const Padding(
-      padding: EdgeInsets.symmetric(vertical: 4),
-      child: Text('Generate NASA Environment'),
-    ),
-  ),
-),
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouter.environment,
+                                  arguments: {
+                                    'farmProfile': widget.farmProfile,
+                                    'farmPriorities': farmPriorities,
+                                  },
+                                );
+                              },
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 4),
+                                child: Text('Generate NASA Environment'),
+                              ),
+                            ),
+                          ),
 
-const SizedBox(height: 24),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
@@ -135,32 +178,26 @@ const SizedBox(height: 24),
     );
   }
 }
-class _PriorityCard extends StatefulWidget {
+
+class _PriorityCard extends StatelessWidget {
   const _PriorityCard({
     required this.icon,
     required this.title,
     required this.description,
+    required this.isSelected,
+    required this.onTap,
   });
 
   final IconData icon;
   final String title;
   final String description;
-
-  @override
-  State<_PriorityCard> createState() => _PriorityCardState();
-}
-
-class _PriorityCardState extends State<_PriorityCard> {
-  bool isSelected = false;
+  final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        setState(() {
-          isSelected = !isSelected;
-        });
-      },
+      onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
@@ -170,31 +207,22 @@ class _PriorityCardState extends State<_PriorityCard> {
           color: AppColors.surfaceWhite,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected
-                ? AppColors.primaryGreen
-                : AppColors.borderSlate,
+            color: isSelected ? AppColors.primaryGreen : AppColors.borderSlate,
             width: isSelected ? 2 : 1,
           ),
         ),
         child: Row(
           children: [
-            Icon(
-              widget.icon,
-              color: AppColors.primaryGreen,
-              size: 26,
-            ),
+            Icon(icon, color: AppColors.primaryGreen, size: 26),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.title,
-                    style: AppTextStyles.h3,
-                  ),
+                  Text(title, style: AppTextStyles.h3),
                   const SizedBox(height: 4),
                   Text(
-                    widget.description,
+                    description,
                     style: AppTextStyles.body.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -204,12 +232,8 @@ class _PriorityCardState extends State<_PriorityCard> {
             ),
             const SizedBox(width: 12),
             Icon(
-              isSelected
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked,
-              color: isSelected
-                  ? AppColors.primaryGreen
-                  : AppColors.textMuted,
+              isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
+              color: isSelected ? AppColors.primaryGreen : AppColors.textMuted,
             ),
           ],
         ),

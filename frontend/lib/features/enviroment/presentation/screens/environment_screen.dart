@@ -2,22 +2,32 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../farm/presentation/widgets/farm_setup_header.dart';
 import '../../../../core/routing/app_router.dart';
+import '../../../farm/data/models/farm_profile_model.dart';
+import '../../../farm/data/models/farm_priorities_model.dart';
+import '../../../farm/presentation/widgets/farm_setup_header.dart';
+import '../../data/models/environment_data_model.dart';
 
 class EnvironmentScreen extends StatelessWidget {
-  const EnvironmentScreen({super.key});
+  const EnvironmentScreen({
+    super.key,
+    required this.farmProfile,
+    required this.farmPriorities,
+  });
+
+  final FarmProfileModel farmProfile;
+  final FarmPrioritiesModel farmPriorities;
 
   @override
   Widget build(BuildContext context) {
+    final environmentData = EnvironmentDataModel();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            FarmSetupHeader(
-              onBack: () => Navigator.pop(context),
-            ),
+            FarmSetupHeader(onBack: () => Navigator.pop(context)),
             Expanded(
               child: SingleChildScrollView(
                 child: Center(
@@ -61,10 +71,7 @@ class EnvironmentScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 32),
 
-                          Text(
-                            'NASA Environment',
-                            style: AppTextStyles.h1,
-                          ),
+                          Text('NASA Environment', style: AppTextStyles.h1),
                           const SizedBox(height: 8),
                           Text(
                             'Review the environmental conditions for your farm.',
@@ -80,7 +87,7 @@ class EnvironmentScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
 
-                          const _EnvironmentGrid(),
+                          _EnvironmentGrid(environmentData: environmentData),
 
                           const SizedBox(height: 24),
 
@@ -90,9 +97,7 @@ class EnvironmentScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: AppColors.surfaceWhite,
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(
-                                color: AppColors.borderSlate,
-                              ),
+                              border: Border.all(color: AppColors.borderSlate),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,16 +125,14 @@ class EnvironmentScreen extends StatelessWidget {
                             width: double.infinity,
                             child: FilledButton(
                               onPressed: () {
-  Navigator.pushNamed(
-    context,
-    AppRouter.rotationStrategy,
-  );
-},
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouter.rotationStrategy,
+                                );
+                              },
                               child: const Padding(
                                 padding: EdgeInsets.symmetric(vertical: 4),
-                                child: Text(
-                                  'Continue to Rotation Strategy',
-                                ),
+                                child: Text('Continue to Rotation Strategy'),
                               ),
                             ),
                           ),
@@ -150,7 +153,9 @@ class EnvironmentScreen extends StatelessWidget {
 }
 
 class _EnvironmentGrid extends StatelessWidget {
-  const _EnvironmentGrid();
+  const _EnvironmentGrid({required this.environmentData});
+
+  final EnvironmentDataModel environmentData;
 
   @override
   Widget build(BuildContext context) {
@@ -158,29 +163,37 @@ class _EnvironmentGrid extends StatelessWidget {
       builder: (context, constraints) {
         final isMobile = constraints.maxWidth < 600;
 
-        const cards = [
+        final cards = [
           _EnvironmentCard(
             icon: Icons.thermostat_outlined,
             title: 'Temperature',
-            value: 'Pending',
+            value: environmentData.temperature != null
+                ? '${environmentData.temperature!.toStringAsFixed(1)} °C'
+                : 'Pending',
             subtitle: 'NASA data',
           ),
           _EnvironmentCard(
             icon: Icons.water_drop_outlined,
             title: 'Precipitation',
-            value: 'Pending',
+            value: environmentData.precipitation != null
+                ? '${environmentData.precipitation!.toStringAsFixed(1)} mm'
+                : 'Pending',
             subtitle: 'NASA data',
           ),
           _EnvironmentCard(
             icon: Icons.grass_outlined,
             title: 'Soil Moisture',
-            value: 'Pending',
+            value: environmentData.soilMoisture != null
+                ? environmentData.soilMoisture!.toStringAsFixed(2)
+                : 'Pending',
             subtitle: 'NASA data',
           ),
           _EnvironmentCard(
             icon: Icons.wb_sunny_outlined,
             title: 'Land Surface',
-            value: 'Pending',
+            value: environmentData.landSurfaceTemperature != null
+                ? '${environmentData.landSurfaceTemperature!.toStringAsFixed(1)} °C'
+                : 'Pending',
             subtitle: 'NASA data',
           ),
         ];
@@ -244,36 +257,23 @@ class _EnvironmentCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surfaceWhite,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.borderSlate,
-        ),
+        border: Border.all(color: AppColors.borderSlate),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            icon,
-            color: AppColors.primaryGreen,
-            size: 26,
-          ),
+          Icon(icon, color: AppColors.primaryGreen, size: 26),
           const SizedBox(height: 16),
           Text(
             title,
-            style: AppTextStyles.body.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: AppTextStyles.body.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: 6),
-          Text(
-            value,
-            style: AppTextStyles.h3,
-          ),
+          Text(value, style: AppTextStyles.h3),
           const SizedBox(height: 4),
           Text(
             subtitle,
-            style: AppTextStyles.caption.copyWith(
-              color: AppColors.textMuted,
-            ),
+            style: AppTextStyles.caption.copyWith(color: AppColors.textMuted),
           ),
         ],
       ),
