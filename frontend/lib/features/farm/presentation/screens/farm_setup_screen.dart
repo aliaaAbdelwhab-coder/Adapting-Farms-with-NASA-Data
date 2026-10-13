@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/app_shell.dart';
+import '../../../../core/widgets/app_sidebar.dart';
 import '../widgets/farm_profile_form.dart';
-import '../widgets/farm_setup_header.dart';
 
 class FarmSetupScreen extends StatelessWidget {
   const FarmSetupScreen({super.key});
@@ -11,21 +12,9 @@ class FarmSetupScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            FarmSetupHeader(
-              onBack: () {
-                Navigator.pop(context);
-              },
-            ),
-            const Expanded(
-              child: SingleChildScrollView(
-                child: FarmProfileForm(),
-              ),
-            ),
-          ],
-        ),
+      body: const AppShell(
+        activeSection: AppSidebarSection.myFarm,
+        child: SafeArea(child: SingleChildScrollView(child: FarmProfileForm())),
       ),
     );
   }
