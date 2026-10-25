@@ -301,6 +301,25 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
           style: _figtree(12, color: AppColors.textSecondary),
         ),
         const SizedBox(height: 12),
+        if (MediaQuery.sizeOf(context).width < AppShell.desktopBreakpoint) ...[
+          Row(
+            children: [
+              const Icon(
+                Icons.swipe_rounded,
+                size: 16,
+                color: AppColors.textSecondary,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Swipe left to see Plans B and C',
+                  style: _figtree(11, color: AppColors.textSecondary),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+        ],
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
@@ -477,7 +496,7 @@ class _RotationPlanCard extends StatelessWidget {
               Flexible(
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
+                    horizontal: 7,
                     vertical: 5,
                   ),
                   decoration: BoxDecoration(
@@ -496,24 +515,26 @@ class _RotationPlanCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
-              if (isPreview)
-                Text(
-                  'DEMO',
-                  style: _figtree(
-                    9,
-                    weight: FontWeight.w700,
-                    color: AppColors.textMuted,
-                  ),
-                ),
               const Spacer(),
               Text(
                 '${plan.matchPercent}% Match',
-                style: _outfit(17, weight: FontWeight.w700),
+                style: _outfit(15, weight: FontWeight.w700),
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          if (isPreview)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                'DEMO PLAN',
+                style: _figtree(
+                  9,
+                  weight: FontWeight.w700,
+                  color: AppColors.textMuted,
+                ),
+              ),
+            ),
+          const SizedBox(height: 10),
           Text(
             plan.title,
             maxLines: 1,
