@@ -10,6 +10,8 @@ import '../../features/farm/data/models/farm_profile_model.dart';
 import '../../features/farm/data/models/farm_priorities_model.dart';
 import '../../features/what_if/presentation/screens/what_if_screen.dart';
 import '../../features/crop_reference/presentation/screens/crop_reference_screen.dart';
+import '../../features/results/presentation/screens/results_summary_screen.dart';
+import '../../features/results/data/models/strategy_summary_model.dart';
 
 class AppRouter {
   AppRouter._();
@@ -21,6 +23,7 @@ class AppRouter {
   static const String rotationStrategy = '/rotation-strategy';
   static const String whatIf = '/what-if';
   static const String cropReference = '/crop-reference';
+  static const String resultsSummary = '/results-summary';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -57,8 +60,15 @@ class AppRouter {
         final profile = args is Map<String, dynamic>
             ? args['farmProfile']
             : null;
+        final priorities = args is Map<String, dynamic>
+            ? args['farmPriorities']
+            : null;
         return MaterialPageRoute(
           builder: (_) => RotationStrategyScreen(
+            farmProfile: profile is FarmProfileModel ? profile : null,
+            farmPriorities: priorities is FarmPrioritiesModel
+                ? priorities
+                : null,
             farmName: profile is FarmProfileModel
                 ? profile.farmName
                 : 'Your Farm',
@@ -76,6 +86,16 @@ class AppRouter {
             : null;
         return MaterialPageRoute(
           builder: (_) => WhatIfScreen(
+            farmProfile:
+                args is Map<String, dynamic> &&
+                    args['farmProfile'] is FarmProfileModel
+                ? args['farmProfile'] as FarmProfileModel
+                : null,
+            farmPriorities:
+                args is Map<String, dynamic> &&
+                    args['farmPriorities'] is FarmPrioritiesModel
+                ? args['farmPriorities'] as FarmPrioritiesModel
+                : null,
             farmName: farmName is String ? farmName : 'Your Farm',
             farmLocation: farmLocation is String
                 ? farmLocation
@@ -95,6 +115,15 @@ class AppRouter {
             farmLocation: farmLocation is String
                 ? farmLocation
                 : 'Location not set',
+          ),
+          settings: settings,
+        );
+      case resultsSummary:
+        return MaterialPageRoute(
+          builder: (_) => ResultsSummaryScreen(
+            summary: StrategySummaryModel.fromRouteArguments(
+              settings.arguments,
+            ),
           ),
           settings: settings,
         );

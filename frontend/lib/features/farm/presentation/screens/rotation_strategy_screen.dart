@@ -6,6 +6,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
 import '../../data/models/rotation_plan_model.dart';
+import '../../data/models/farm_profile_model.dart';
+import '../../data/models/farm_priorities_model.dart';
 import '../widgets/farm_setup_header.dart';
 
 /// Figma-aligned Rotation Explorer for desktop and mobile.
@@ -19,12 +21,16 @@ class RotationStrategyScreen extends StatefulWidget {
     this.plans = const <RotationPlanModel>[],
     this.farmName = 'Your Farm',
     this.farmLocation = 'Location not set',
+    this.farmProfile,
+    this.farmPriorities,
   });
 
   /// Pass verified results here once the recommendation engine is integrated.
   final List<RotationPlanModel> plans;
   final String farmName;
   final String farmLocation;
+  final FarmProfileModel? farmProfile;
+  final FarmPrioritiesModel? farmPriorities;
 
   @override
   State<RotationStrategyScreen> createState() => _RotationStrategyScreenState();
@@ -187,6 +193,8 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
       arguments: {
         'farmName': widget.farmName,
         'farmLocation': widget.farmLocation,
+        'farmProfile': widget.farmProfile,
+        'farmPriorities': widget.farmPriorities,
       },
     );
   }
