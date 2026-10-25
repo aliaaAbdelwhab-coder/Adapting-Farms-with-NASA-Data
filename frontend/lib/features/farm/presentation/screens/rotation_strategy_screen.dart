@@ -468,6 +468,25 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
                 const SizedBox(height: 14),
                 SizedBox(
                   width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(sheetContext);
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.cropReference,
+                        arguments: {
+                          'farmName': widget.farmName,
+                          'farmLocation': widget.farmLocation,
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.menu_book_outlined),
+                    label: const Text('View Crop Reference'),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
                   child: FilledButton(
                     onPressed: () => Navigator.pop(sheetContext),
                     style: FilledButton.styleFrom(
