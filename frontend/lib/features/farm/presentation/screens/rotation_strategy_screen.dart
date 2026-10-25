@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/routing/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
@@ -60,6 +61,22 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
       backgroundColor: AppColors.background,
       body: AppShell(
         activeSection: AppSidebarSection.rotationExplorer,
+        onSectionSelected: (section) {
+          if (section == AppSidebarSection.whatIf) {
+            _openWhatIf();
+          } else if (section != AppSidebarSection.rotationExplorer) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'This navigation section is not connected yet.',
+                  ),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+          }
+        },
         farmName: widget.farmName,
         farmLocation: widget.farmLocation,
         child: SafeArea(
@@ -97,6 +114,18 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
                                 textAlign: TextAlign.center,
                                 style: _figtree(12, color: AppColors.textMuted),
                               ),
+                              const SizedBox(height: 14),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: OutlinedButton.icon(
+                                  onPressed: _openWhatIf,
+                                  icon: const Icon(
+                                    Icons.tune_rounded,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Try What-If Simulator'),
+                                ),
+                              ),
                             ] else ...[
                               _buildMobileCards(),
                               const SizedBox(height: 14),
@@ -125,6 +154,17 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
                                   child: _buildComparisonTable(),
                                 ),
                               ],
+                              const SizedBox(height: 10),
+                              Center(
+                                child: OutlinedButton.icon(
+                                  onPressed: _openWhatIf,
+                                  icon: const Icon(
+                                    Icons.tune_rounded,
+                                    size: 18,
+                                  ),
+                                  label: const Text('Try What-If Simulator'),
+                                ),
+                              ),
                             ],
                           ],
                         ),
@@ -137,6 +177,17 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _openWhatIf() {
+    Navigator.pushNamed(
+      context,
+      AppRouter.whatIf,
+      arguments: {
+        'farmName': widget.farmName,
+        'farmLocation': widget.farmLocation,
+      },
     );
   }
 

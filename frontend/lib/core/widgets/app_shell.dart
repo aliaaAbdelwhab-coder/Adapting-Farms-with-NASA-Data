@@ -64,8 +64,12 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isDesktop = constraints.maxWidth >= desktopBreakpoint;
+        // Avoid layout overflow during temporary tiny viewport sizes.
+        if (constraints.maxWidth < 80 || constraints.maxHeight < 80) {
+          return const SizedBox.shrink();
+        }
 
+        final isDesktop = constraints.maxWidth >= desktopBreakpoint;
         if (!isDesktop) {
           return Column(
             children: [

@@ -284,7 +284,14 @@ class EnvironmentScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      onPressed: () => Navigator.pushNamed(context, AppRouter.rotationStrategy),
+      onPressed: () => Navigator.pushNamed(
+        context,
+        AppRouter.rotationStrategy,
+        arguments: {
+          'farmProfile': farmProfile,
+          'farmPriorities': farmPriorities,
+        },
+      ),
       icon: const Icon(Icons.arrow_forward, size: 18),
       label: Text(
         'Continue to Rotation Strategy',
