@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/routing/app_navigation.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
@@ -24,20 +25,17 @@ class ResultsSummaryScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: AppShell(
-        activeSection: AppSidebarSection.savedScenarios,
+        activeSection: AppSidebarSection.whatIf,
         farmName: summary.farmName,
         farmLocation: summary.farmLocation,
         onSectionSelected: (section) {
-          if (section == AppSidebarSection.savedScenarios) return;
+          if (section == AppSidebarSection.whatIf) return;
           if (section == AppSidebarSection.rotationExplorer) {
             _comparePlans(context);
           } else if (section == AppSidebarSection.myFarm) {
             _modifyFarm(context);
           } else {
-            _showNotice(
-              context,
-              'This navigation section is not connected yet.',
-            );
+            AppNavigation.go(context, section);
           }
         },
         child: SafeArea(
@@ -167,14 +165,14 @@ class ResultsSummaryScreen extends StatelessWidget {
   );
 
   Widget _farmCard({required bool desktop}) {
-    final area = summary.cultivatedArea;
+    final area = summary.displayArea;
     final rows = <_ValueItem>[
       _ValueItem('Location', summary.farmLocation),
       _ValueItem(
         'Size',
         area == null
             ? 'Not available'
-            : '${area.toStringAsFixed(area == area.roundToDouble() ? 0 : 1)} (unit not stored)',
+            : '${area.toStringAsFixed(area == area.roundToDouble() ? 0 : 2)} ${summary.areaUnit}',
       ),
       _ValueItem('Soil Type', summary.soilType ?? 'Not available'),
       _ValueItem('Active Crop', summary.currentCrop ?? 'Not available'),
@@ -184,7 +182,7 @@ class ResultsSummaryScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (desktop)
-            Text('Farm Coordinates Overview', style: _outfit(17, bold: true))
+            Text('Farm Overview', style: _outfit(17, bold: true))
           else
             Row(
               children: [
@@ -539,12 +537,12 @@ class ResultsSummaryScreen extends StatelessWidget {
       return route.isFirst;
     });
     if (!found) {
-      navigator.pushNamed(AppRouter.rotationStrategy);
+      AppNavigation.go(context, AppSidebarSection.rotationExplorer);
     }
   }
 
   void _modifyFarm(BuildContext context) {
-    Navigator.pushNamed(context, AppRouter.farmSetup);
+    AppNavigation.go(context, AppSidebarSection.myFarm);
   }
 
   void _showNotice(BuildContext context, String message) {

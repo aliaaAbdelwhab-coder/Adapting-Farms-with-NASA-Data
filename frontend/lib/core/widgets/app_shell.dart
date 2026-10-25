@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../routing/app_navigation.dart';
 import 'app_bottom_nav.dart';
 import 'app_sidebar.dart';
 
@@ -50,14 +51,7 @@ class AppShell extends StatelessWidget {
       return;
     }
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        const SnackBar(
-          content: Text('This navigation section is not connected yet.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+    AppNavigation.go(context, targetSection);
   }
 
   @override
@@ -89,7 +83,14 @@ class AppShell extends StatelessWidget {
           children: [
             AppSidebar(
               activeSection: activeSection,
-              onSectionSelected: onSectionSelected,
+              onSectionSelected: (section) {
+                if (section == activeSection) return;
+                if (onSectionSelected != null) {
+                  onSectionSelected!(section);
+                } else {
+                  AppNavigation.go(context, section);
+                }
+              },
               farmName: farmName,
               farmLocation: farmLocation,
             ),

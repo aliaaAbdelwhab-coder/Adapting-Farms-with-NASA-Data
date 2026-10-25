@@ -6,6 +6,7 @@ class FarmProfileModel {
     required this.soilType,
     required this.currentCrop,
     required this.waterSource,
+    this.areaUnit = 'Acres',
   });
 
   final String farmName;
@@ -15,6 +16,13 @@ class FarmProfileModel {
   final String currentCrop;
   final String waterSource;
 
+  /// Original input unit; cultivatedArea remains normalized to acres.
+  final String areaUnit;
+
+  double get displayArea => areaUnit == 'Hectares'
+      ? cultivatedArea / 2.471053814671653
+      : cultivatedArea;
+
   Map<String, dynamic> toJson() {
     return {
       'farmName': farmName,
@@ -23,6 +31,7 @@ class FarmProfileModel {
       'soilType': soilType,
       'currentCrop': currentCrop,
       'waterSource': waterSource,
+      'areaUnit': areaUnit,
     };
   }
 
@@ -34,6 +43,7 @@ class FarmProfileModel {
       soilType: json['soilType'] as String,
       currentCrop: json['currentCrop'] as String,
       waterSource: json['waterSource'] as String,
+      areaUnit: json['areaUnit'] == 'Hectares' ? 'Hectares' : 'Acres',
     );
   }
 }

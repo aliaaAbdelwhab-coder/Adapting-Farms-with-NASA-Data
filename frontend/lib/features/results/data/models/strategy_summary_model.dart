@@ -9,6 +9,7 @@ class StrategySummaryModel {
     required this.farmName,
     required this.farmLocation,
     this.cultivatedArea,
+    this.areaUnit = 'Acres',
     this.soilType,
     this.currentCrop,
     this.farmPriorities,
@@ -18,6 +19,15 @@ class StrategySummaryModel {
   final String farmName;
   final String farmLocation;
   final double? cultivatedArea;
+
+  /// Original area unit; area value is stored as normalized acres.
+  final String areaUnit;
+
+  double? get displayArea => cultivatedArea == null
+      ? null
+      : areaUnit == 'Hectares'
+      ? cultivatedArea! / 2.471053814671653
+      : cultivatedArea;
   final String? soilType;
   final String? currentCrop;
   final FarmPrioritiesModel? farmPriorities;
@@ -48,6 +58,7 @@ class StrategySummaryModel {
               ? args['farmLocation'] as String
               : 'Location not set'),
       cultivatedArea: p?.cultivatedArea,
+      areaUnit: p?.areaUnit ?? 'Acres',
       soilType: p?.soilType,
       currentCrop: p?.currentCrop,
       farmPriorities: priorities is FarmPrioritiesModel ? priorities : null,
@@ -59,6 +70,7 @@ class StrategySummaryModel {
     'farmName': farmName,
     'farmLocation': farmLocation,
     'cultivatedArea': cultivatedArea,
+    'areaUnit': areaUnit,
     'soilType': soilType,
     'currentCrop': currentCrop,
     'farmPriorities': farmPriorities?.toJson(),
@@ -72,6 +84,7 @@ class StrategySummaryModel {
       farmName: json['farmName'] as String,
       farmLocation: json['farmLocation'] as String,
       cultivatedArea: (json['cultivatedArea'] as num?)?.toDouble(),
+      areaUnit: json['areaUnit'] == 'Hectares' ? 'Hectares' : 'Acres',
       soilType: json['soilType'] as String?,
       currentCrop: json['currentCrop'] as String?,
       farmPriorities: priorities is Map<String, dynamic>

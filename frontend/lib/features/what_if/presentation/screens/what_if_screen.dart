@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/routing/app_navigation.dart';
+import '../../../../core/state/fieldshift_session.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
@@ -43,15 +45,23 @@ class _WhatIfScreenState extends State<WhatIfScreen> {
   void initState() {
     super.initState();
     _scenario = widget.initialScenario;
+    FieldShiftSession.instance.scenario = _scenario;
   }
 
-  void _resetScenario() => setState(() {
-    _scenario = const WhatIfScenarioModel(
-      rainfallChangePercent: 0,
-      temperatureChangeCelsius: 0,
-      waterAvailabilityChangePercent: 0,
+  void _resetScenario() {
+    _updateScenario(
+      const WhatIfScenarioModel(
+        rainfallChangePercent: 0,
+        temperatureChangeCelsius: 0,
+        waterAvailabilityChangePercent: 0,
+      ),
     );
-  });
+  }
+
+  void _updateScenario(WhatIfScenarioModel next) {
+    setState(() => _scenario = next);
+    FieldShiftSession.instance.scenario = next;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +77,8 @@ class _WhatIfScreenState extends State<WhatIfScreen> {
         farmName: widget.farmName,
         farmLocation: widget.farmLocation,
         onSectionSelected: (section) {
-          if (section == AppSidebarSection.rotationExplorer && desktop) {
-            Navigator.maybePop(context);
-            return;
-          }
           if (section == AppSidebarSection.whatIf) return;
-          _notConnected(context);
+          AppNavigation.go(context, section);
         },
         child: SafeArea(
           child: Column(
@@ -235,9 +241,8 @@ class _WhatIfScreenState extends State<WhatIfScreen> {
     color: desktop ? AppColors.alertAmber : AppColors.accentBlue,
     minLabel: '-30%',
     maxLabel: '+30%',
-    onChanged: (value) => setState(
-      () => _scenario = _scenario.copyWith(rainfallChangePercent: value),
-    ),
+    onChanged: (value) =>
+        _updateScenario(_scenario.copyWith(rainfallChangePercent: value)),
     showLimits: desktop,
   );
 
@@ -252,9 +257,8 @@ class _WhatIfScreenState extends State<WhatIfScreen> {
     color: AppColors.alertAmber,
     minLabel: '-3°C',
     maxLabel: '+5°C',
-    onChanged: (value) => setState(
-      () => _scenario = _scenario.copyWith(temperatureChangeCelsius: value),
-    ),
+    onChanged: (value) =>
+        _updateScenario(_scenario.copyWith(temperatureChangeCelsius: value)),
     showLimits: desktop,
   );
 
@@ -269,9 +273,8 @@ class _WhatIfScreenState extends State<WhatIfScreen> {
     color: desktop ? AppColors.alertAmber : AppColors.secondaryBrown,
     minLabel: '-50%',
     maxLabel: '+50%',
-    onChanged: (value) => setState(
-      () =>
-          _scenario = _scenario.copyWith(waterAvailabilityChangePercent: value),
+    onChanged: (value) => _updateScenario(
+      _scenario.copyWith(waterAvailabilityChangePercent: value),
     ),
     showLimits: desktop,
   );
@@ -651,14 +654,3 @@ TextStyle _figtree(
   fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
   color: color,
 );
-
-void _notConnected(BuildContext context) {
-  ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
-    ..showSnackBar(
-      const SnackBar(
-        content: Text('This navigation section is not connected yet.'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-}

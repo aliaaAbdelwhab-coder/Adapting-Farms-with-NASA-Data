@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/routing/app_navigation.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
@@ -71,16 +72,7 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
           if (section == AppSidebarSection.whatIf) {
             _openWhatIf();
           } else if (section != AppSidebarSection.rotationExplorer) {
-            ScaffoldMessenger.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'This navigation section is not connected yet.',
-                  ),
-                  duration: Duration(seconds: 2),
-                ),
-              );
+            AppNavigation.go(context, section);
           }
         },
         farmName: widget.farmName,

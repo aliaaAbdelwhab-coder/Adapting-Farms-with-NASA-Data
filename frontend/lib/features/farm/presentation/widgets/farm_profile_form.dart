@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/state/fieldshift_session.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/models/farm_profile_model.dart';
 
@@ -28,6 +29,29 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
   static const _soilTypes = ['Loam', 'Clay', 'Sandy Loam'];
   static const _crops = ['Corn', 'Wheat', 'Soybean', 'Rice'];
   static const _waterSources = ['Irrigated', 'Rain-fed', 'Mixed'];
+
+  @override
+  void initState() {
+    super.initState();
+    final previous = FieldShiftSession.instance.takeEditProfile();
+    if (previous == null) return;
+    _farmNameController.text = previous.farmName;
+    _locationController.text = previous.location;
+    _areaUnit = previous.areaUnit;
+    final amount = previous.displayArea;
+    _cultivatedAreaController.text = amount.toStringAsFixed(
+      amount == amount.roundToDouble() ? 0 : 2,
+    );
+    _selectedSoilType = _soilTypes.contains(previous.soilType)
+        ? previous.soilType
+        : null;
+    _selectedCrop = _crops.contains(previous.currentCrop)
+        ? previous.currentCrop
+        : null;
+    _selectedWaterSource = _waterSources.contains(previous.waterSource)
+        ? previous.waterSource
+        : null;
+  }
 
   @override
   void dispose() {
@@ -625,6 +649,7 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
       soilType: _selectedSoilType!,
       currentCrop: _selectedCrop!,
       waterSource: _selectedWaterSource!,
+      areaUnit: _areaUnit,
     );
 
     Navigator.pushNamed(context, AppRouter.priorities, arguments: farmProfile);
