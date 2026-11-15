@@ -1,35 +1,40 @@
 /// A crop rotation candidate provided by a future recommendation engine.
 ///
 /// This data object carries values; it does not calculate suitability scores.
+/// Numeric scores are nullable: null means the source did not provide them.
 class RotationPlanModel {
   const RotationPlanModel({
     required this.id,
     required this.title,
     required this.description,
     required this.badgeLabel,
-    required this.matchPercent,
+    this.matchPercent,
     required this.crops,
-    required this.waterDemandLabel,
-    required this.waterDemandPercent,
-    required this.soilHealthScore,
-    required this.climateResilienceScore,
+    this.waterDemandLabel,
+    this.waterDemandPercent,
+    this.soilHealthScore,
+    this.climateResilienceScore,
     this.biomassNitrogen = 'Not available',
     this.rootingDepth = 'Not available',
-  }) : assert(matchPercent >= 0 && matchPercent <= 100),
-       assert(waterDemandPercent >= 0 && waterDemandPercent <= 100),
-       assert(soilHealthScore >= 0 && soilHealthScore <= 100),
-       assert(climateResilienceScore >= 0 && climateResilienceScore <= 100);
+  }) : assert(matchPercent == null ||
+            (matchPercent >= 0 && matchPercent <= 100)),
+       assert(waterDemandPercent == null ||
+            (waterDemandPercent >= 0 && waterDemandPercent <= 100)),
+       assert(soilHealthScore == null ||
+            (soilHealthScore >= 0 && soilHealthScore <= 100)),
+       assert(climateResilienceScore == null ||
+            (climateResilienceScore >= 0 && climateResilienceScore <= 100));
 
   final String id;
   final String title;
   final String description;
   final String badgeLabel;
-  final int matchPercent;
+  final int? matchPercent;
   final List<String> crops;
-  final String waterDemandLabel;
-  final int waterDemandPercent;
-  final int soilHealthScore;
-  final int climateResilienceScore;
+  final String? waterDemandLabel;
+  final int? waterDemandPercent;
+  final int? soilHealthScore;
+  final int? climateResilienceScore;
   final String biomassNitrogen;
   final String rootingDepth;
 
@@ -49,8 +54,9 @@ class RotationPlanModel {
   };
 
   factory RotationPlanModel.fromJson(Map<String, dynamic> json) {
-    int percentage(String key) {
+    int? percentage(String key) {
       final value = json[key];
+      if (value == null) return null;
       if (value is! num || !value.isFinite || value < 0 || value > 100) {
         throw FormatException('$key must be a number from 0 to 100.');
       }
@@ -69,7 +75,7 @@ class RotationPlanModel {
       badgeLabel: json['badgeLabel'] as String,
       matchPercent: percentage('matchPercent'),
       crops: List<String>.unmodifiable(cropItems.cast<String>()),
-      waterDemandLabel: json['waterDemandLabel'] as String,
+      waterDemandLabel: json['waterDemandLabel'] as String?,
       waterDemandPercent: percentage('waterDemandPercent'),
       soilHealthScore: percentage('soilHealthScore'),
       climateResilienceScore: percentage('climateResilienceScore'),

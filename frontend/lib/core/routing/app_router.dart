@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../state/fieldshift_session.dart';
 
+import '../../features/enviroment/data/models/environment_data_model.dart';
 import '../../features/enviroment/presentation/screens/environment_screen.dart'
     show EnvironmentScreen;
 import '../../features/farm/presentation/screens/farm_setup_screen.dart';
@@ -10,6 +11,7 @@ import '../../features/farm/presentation/screens/priorities_screen.dart';
 import '../../features/farm/presentation/screens/rotation_strategy_screen.dart';
 import '../../features/farm/data/models/farm_profile_model.dart';
 import '../../features/farm/data/models/farm_priorities_model.dart';
+import '../../features/farm/data/models/rotation_plan_model.dart';
 import '../../features/what_if/presentation/screens/what_if_screen.dart';
 import '../../features/crop_reference/presentation/screens/crop_reference_screen.dart';
 import '../../features/results/presentation/screens/results_summary_screen.dart';
@@ -59,6 +61,8 @@ class AppRouter {
           builder: (_) => EnvironmentScreen(
             farmProfile: farmProfile,
             farmPriorities: farmPriorities,
+            environmentData:
+                session.environmentData ?? const EnvironmentDataModel(),
           ),
           settings: settings,
         );
@@ -82,6 +86,7 @@ class AppRouter {
         }
         return MaterialPageRoute(
           builder: (_) => RotationStrategyScreen(
+            plans: session.rotationPlans ?? const <RotationPlanModel>[],
             farmProfile: profile is FarmProfileModel ? profile : null,
             farmPriorities: priorities is FarmPrioritiesModel
                 ? priorities

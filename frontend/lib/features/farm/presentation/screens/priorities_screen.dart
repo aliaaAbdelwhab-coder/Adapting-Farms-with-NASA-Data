@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/routing/app_router.dart';
+import '../../../../core/state/fieldshift_session.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_shell.dart';
 import '../../../../core/widgets/app_sidebar.dart';
 import '../../data/models/farm_priorities_model.dart';
 import '../../data/models/farm_profile_model.dart';
+import '../../data/services/fieldshift_analysis_service.dart';
 
 /// Step 2 of the farm setup flow. The user's four preferences are 0–100 scores.
 class PrioritiesScreen extends StatefulWidget {
@@ -24,6 +26,52 @@ class _PrioritiesScreenState extends State<PrioritiesScreen> {
   int _soilHealth = 90;
   int _climateResilience = 65;
   int _yieldStability = 40;
+  bool _isGenerating = false;
+
+  Future<void> _generateAndContinue() async {
+    if (_isGenerating) return;
+
+    final farmPriorities = FarmPrioritiesModel(
+      waterEfficiency: _waterEfficiency,
+      soilHealth: _soilHealth,
+      climateResilience: _climateResilience,
+      yieldStability: _yieldStability,
+    );
+
+    setState(() => _isGenerating = true);
+    try {
+      final result = await FieldShiftAnalysisService()
+          .generateFarmAnalysis(
+            farmProfile: widget.farmProfile,
+            farmPriorities: farmPriorities,
+          );
+      if (!mounted) return;
+      FieldShiftSession.instance.setAnalysisResult(result);
+      Navigator.pushNamed(
+        context,
+        AppRouter.environment,
+        arguments: {
+          'farmProfile': widget.farmProfile,
+          'farmPriorities': farmPriorities,
+        },
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Could not reach the analysis service. '
+              'Check that the backend is running, then try again.',
+            ),
+            duration: Duration(seconds: 4),
+          ),
+        );
+    } finally {
+      if (mounted) setState(() => _isGenerating = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -284,33 +332,32 @@ class _PrioritiesScreenState extends State<PrioritiesScreen> {
     );
 
     final continueButton = FilledButton.icon(
-      onPressed: () {
-        final farmPriorities = FarmPrioritiesModel(
-          waterEfficiency: _waterEfficiency,
-          soilHealth: _soilHealth,
-          climateResilience: _climateResilience,
-          yieldStability: _yieldStability,
-        );
-        Navigator.pushNamed(
-          context,
-          AppRouter.environment,
-          arguments: {
-            'farmProfile': widget.farmProfile,
-            'farmPriorities': farmPriorities,
-          },
-        );
-      },
+      onPressed: _isGenerating ? null : _generateAndContinue,
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.primaryGreen,
         foregroundColor: Colors.white,
+        disabledBackgroundColor: AppColors.primaryGreen.withValues(alpha: 0.6),
         padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 18),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      icon: const Icon(Icons.arrow_forward, size: 18),
+      icon: _isGenerating
+          ? const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )
+          : const Icon(Icons.arrow_forward, size: 18),
       label: Text(
-        desktop ? 'Generate NASA Environment' : 'Continue',
+        _isGenerating
+            ? 'Generating analysis...'
+            : desktop
+            ? 'Generate NASA Environment'
+            : 'Continue',
         style: GoogleFonts.figtree(fontSize: 16, fontWeight: FontWeight.w700),
       ),
     );

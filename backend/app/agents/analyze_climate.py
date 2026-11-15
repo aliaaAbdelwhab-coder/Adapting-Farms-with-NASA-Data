@@ -53,6 +53,20 @@ def analyze_climate_node(state: FieldShiftState) -> dict[str, Any]:
         summary["annual"]["total_precipitation_mm"] = round(
             float(df["PRECTOTCORR"].sum()), 2
         ) if df["PRECTOTCORR"].notna().any() else None
+    if "ALLSKY_SFC_SW_DWN" in df:
+        summary["annual"]["average_daily_solar_radiation"] = (
+            float(df["ALLSKY_SFC_SW_DWN"].mean())
+        )
+
+    if "RH2M" in df:
+        summary["annual"]["average_relative_humidity"] = (
+            float(df["RH2M"].mean())
+        )
+
+    if "WS10M" in df:
+        summary["annual"]["average_wind_speed_10m"] = (
+            float(df["WS10M"].mean())
+        )
 
     df["month"] = df["date"].dt.month
     monthly = df.groupby("month").agg(
@@ -60,6 +74,17 @@ def analyze_climate_node(state: FieldShiftState) -> dict[str, Any]:
         precipitation_mm=("PRECTOTCORR", "sum"),
         mean_daily_max_temperature_c=("T2M_MAX", "mean"),
         mean_daily_min_temperature_c=("T2M_MIN", "mean"),
+        mean_solar_radiation=(
+                    "ALLSKY_SFC_SW_DWN", "mean"
+                ),
+
+                mean_relative_humidity=(
+                    "RH2M", "mean"
+                ),
+
+                mean_wind_speed_10m=(
+                    "WS10M", "mean"
+                ),
     ).reset_index()
 
     summary["monthly"] = monthly.round(2).where(
