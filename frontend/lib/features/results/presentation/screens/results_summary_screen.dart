@@ -168,6 +168,15 @@ class ResultsSummaryScreen extends StatelessWidget {
     final area = summary.displayArea;
     final rows = <_ValueItem>[
       _ValueItem('Location', summary.farmLocation),
+      if (summary.country?.isNotEmpty ?? false)
+        _ValueItem('Country', summary.country!),
+      if (summary.governorate?.isNotEmpty ?? false)
+        _ValueItem('Governorate / Region', summary.governorate!),
+      if (summary.hasCoordinates)
+        _ValueItem(
+          'Farm coordinates',
+          '${summary.latitude!.toStringAsFixed(6)}, ${summary.longitude!.toStringAsFixed(6)}',
+        ),
       _ValueItem(
         'Size',
         area == null
