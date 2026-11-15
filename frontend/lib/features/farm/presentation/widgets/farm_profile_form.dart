@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/routing/app_router.dart';
 import '../../../../core/state/fieldshift_session.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/models/farm_profile_model.dart';
+import 'farm_location_picker.dart';
 
-/// Farm profile screen content, based on the FieldShift Figma desktop/mobile
-/// layout. The illustration area is deliberately NOT live geolocation.
+/// Farm profile form with an interactive, user-selected farm point.
 class FarmProfileForm extends StatefulWidget {
   const FarmProfileForm({super.key});
 
@@ -19,7 +20,69 @@ class FarmProfileForm extends StatefulWidget {
 class _FarmProfileFormState extends State<FarmProfileForm> {
   final _farmNameController = TextEditingController();
   final _locationController = TextEditingController();
+  final _otherCountryController = TextEditingController();
+  final _governorateController = TextEditingController();
   final _cultivatedAreaController = TextEditingController();
+  final _latitudeController = TextEditingController();
+  final _longitudeController = TextEditingController();
+  LatLng? _selectedFarmPoint;
+  int _mapViewVersion = 0;
+  String? _selectedCountry;
+
+  // The "Other country" option keeps this UI usable worldwide, without
+  // assuming every farm is in the preset countries.
+  static const _countryOptions = <String>[
+    'Egypt',
+    'Saudi Arabia',
+    'Jordan',
+    'Qatar',
+    'United Arab Emirates',
+    'Kuwait',
+    'Bahrain',
+    'Oman',
+    'Morocco',
+    'Tunisia',
+    'Algeria',
+    'Sudan',
+    'Lebanon',
+    'Iraq',
+    'Turkey',
+    'Canada',
+    'South Korea',
+    'United States',
+    'United Kingdom',
+    'India',
+    'Pakistan',
+    'Other country...',
+  ];
+
+  static const _initialCountryCenters = <String, LatLng>{
+    'Egypt': LatLng(26.8, 30.8),
+    'Saudi Arabia': LatLng(24.0, 45.0),
+    'Jordan': LatLng(31.2, 36.2),
+    'Qatar': LatLng(25.3, 51.2),
+    'United Arab Emirates': LatLng(24.3, 54.4),
+    'Kuwait': LatLng(29.3, 47.8),
+    'Bahrain': LatLng(26.1, 50.5),
+    'Oman': LatLng(21.4, 57.0),
+    'Morocco': LatLng(31.8, -7.1),
+    'Tunisia': LatLng(34.0, 9.4),
+    'Algeria': LatLng(28.0, 2.6),
+    'Sudan': LatLng(15.5, 30.2),
+    'Lebanon': LatLng(33.9, 35.9),
+    'Iraq': LatLng(33.2, 43.7),
+    'Turkey': LatLng(39.0, 35.2),
+    'Canada': LatLng(56.1, -106.3),
+    'South Korea': LatLng(36.5, 127.9),
+    'United States': LatLng(39.7, -98.5),
+    'United Kingdom': LatLng(54.0, -2.5),
+    'India': LatLng(22.5, 79.0),
+    'Pakistan': LatLng(30.2, 69.3),
+  };
+
+  String get _countryValue => _selectedCountry == 'Other country...'
+      ? _otherCountryController.text.trim()
+      : (_selectedCountry ?? '');
 
   String? _selectedSoilType;
   String? _selectedCrop;
@@ -36,7 +99,36 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
     final previous = FieldShiftSession.instance.takeEditProfile();
     if (previous == null) return;
     _farmNameController.text = previous.farmName;
-    _locationController.text = previous.location;
+    // New profiles serialize the display location as "City, Region, Country".
+    // Strip the known suffix on Edit to avoid duplicating the region/country.
+    final regionCountry =
+        (previous.country?.trim().isNotEmpty ?? false) &&
+        (previous.governorate?.trim().isNotEmpty ?? false)
+        ? '${previous.governorate!.trim()}, ${previous.country!.trim()}'
+        : null;
+    if (regionCountry != null && previous.location == regionCountry) {
+      _locationController.text = '';
+    } else if (regionCountry != null &&
+        previous.location.endsWith(', $regionCountry')) {
+      _locationController.text = previous.location.substring(
+        0,
+        previous.location.length - regionCountry.length - 2,
+      );
+    } else {
+      _locationController.text = previous.location;
+    }
+    final savedCountry = previous.country?.trim() ?? '';
+    if (_countryOptions.contains(savedCountry) &&
+        savedCountry != 'Other country...') {
+      _selectedCountry = savedCountry;
+    } else if (savedCountry.isNotEmpty) {
+      _selectedCountry = 'Other country...';
+      _otherCountryController.text = savedCountry;
+    }
+    _governorateController.text = previous.governorate ?? '';
+    if (previous.hasCoordinates) {
+      _setCoordinates(LatLng(previous.latitude!, previous.longitude!));
+    }
     _areaUnit = previous.areaUnit;
     final amount = previous.displayArea;
     _cultivatedAreaController.text = amount.toStringAsFixed(
@@ -57,7 +149,11 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
   void dispose() {
     _farmNameController.dispose();
     _locationController.dispose();
+    _otherCountryController.dispose();
+    _governorateController.dispose();
     _cultivatedAreaController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
     super.dispose();
   }
 
@@ -233,6 +329,8 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
       children: [
         Text('Geographical Location', style: _fieldLabel()),
         const SizedBox(height: 8),
+        _countryAndGovernorateFields(),
+        const SizedBox(height: 12),
         _locationInput(),
         const SizedBox(height: 12),
         LayoutBuilder(
@@ -277,6 +375,8 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
           const SizedBox(height: 20),
           Text('Geographical Location', style: _fieldLabel()),
           const SizedBox(height: 8),
+          _countryAndGovernorateFields(),
+          const SizedBox(height: 10),
           _locationInput(),
           const SizedBox(height: 10),
           LayoutBuilder(
@@ -452,63 +552,172 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
     );
   }
 
-  /// The location is entered manually until the team integrates a map provider.
+  /// Country and first-level administrative region are explicit farmer inputs.
+  /// We do not infer them from the map pin without a verified geocoding service.
+  Widget _countryAndGovernorateFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text('Country *', style: _fieldLabel()),
+        const SizedBox(height: 8),
+        DropdownButtonFormField<String>(
+          key: ValueKey('country-$_selectedCountry'),
+          initialValue: _selectedCountry,
+          isExpanded: true,
+          decoration: _inputDecoration('Select country'),
+          style: _body(13),
+          items: _countryOptions
+              .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(item, overflow: TextOverflow.ellipsis),
+                  ))
+              .toList(),
+          onChanged: (value) {
+            if (value == _selectedCountry) return;
+            setState(() {
+              _selectedCountry = value;
+              _otherCountryController.clear();
+              _governorateController.clear();
+              // Avoid silently retaining a marker from a different country.
+              _selectedFarmPoint = null;
+              _latitudeController.clear();
+              _longitudeController.clear();
+              _mapViewVersion++;
+            });
+          },
+        ),
+        if (_selectedCountry == 'Other country...') ...[
+          const SizedBox(height: 9),
+          TextFormField(
+            controller: _otherCountryController,
+            style: _body(13),
+            decoration: _inputDecoration('Enter country name *'),
+          ),
+        ],
+        const SizedBox(height: 13),
+        Text('Governorate / Region / Province *', style: _fieldLabel()),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _governorateController,
+          style: _body(13),
+          textCapitalization: TextCapitalization.words,
+          decoration: _inputDecoration('e.g. Alexandria, Makkah, Amman'),
+        ),
+        const SizedBox(height: 7),
+        Text(
+          'Confirm that the farm pin is in the country and region entered. '
+          'Automatic boundary verification is not available yet.',
+          style: _body(11, color: AppColors.textSecondary),
+        ),
+      ],
+    );
+  }
+
+  /// An optional place name; coordinates must be selected separately.
   Widget _locationInput() {
     return TextFormField(
       controller: _locationController,
       style: _body(13),
-      decoration: _inputDecoration('Enter city or coordinates'),
+      decoration: _inputDecoration('City / area (optional label)'),
     );
   }
 
-  /// Reserved map slot. Do not present Figma's sample Iowa imagery as live data.
+  void _setCoordinates(LatLng point) {
+    _selectedFarmPoint = point;
+    _latitudeController.text = point.latitude.toStringAsFixed(6);
+    _longitudeController.text = point.longitude.toStringAsFixed(6);
+  }
 
-  /// Figma reference image, not a live satellite or geolocation service.
+  void _selectPoint(LatLng point) {
+    if (!FarmProfileModel.coordinatesAreValid(point.latitude, point.longitude)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a point within valid coordinates.')),
+      );
+      return;
+    }
+    setState(() => _setCoordinates(point));
+  }
+
+  void _applyTypedCoordinates() {
+    final latitude = double.tryParse(_latitudeController.text.trim());
+    final longitude = double.tryParse(_longitudeController.text.trim());
+    if (!FarmProfileModel.coordinatesAreValid(latitude, longitude)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text(
+          'Enter latitude between -90 and 90 and longitude between -180 and 180.',
+        )),
+      );
+      return;
+    }
+    setState(() {
+      _setCoordinates(LatLng(latitude!, longitude!));
+      // Recenter the map only for coordinates entered manually.
+      _mapViewVersion++;
+    });
+  }
+
+  /// The selected map point is not a survey-grade boundary or GPS reading.
+  /// The map also supports typing decimal coordinates when tiles are unavailable.
   Widget _mapPreview({required double height, required bool compact}) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(compact ? 10 : 16),
-      child: SizedBox(
-        height: height,
-        width: double.infinity,
-        child: Stack(
-          fit: StackFit.expand,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        FarmLocationPicker(
+          key: ValueKey(_mapViewVersion),
+          height: height,
+          selectedPoint: _selectedFarmPoint,
+          initialCenter: _initialCountryCenters[_selectedCountry],
+          onSelected: _selectPoint,
+        ),
+        const SizedBox(height: 9),
+        Text(
+          _selectedFarmPoint == null
+              ? 'No farm point selected — choose a point on the map or enter coordinates.'
+              : 'Selected point (WGS84 decimal degrees):',
+          style: _body(12, color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: 8),
+        Row(
           children: [
-            Image.asset(
-              'assets/images/map-container.png',
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return const ColoredBox(
-                  color: Color(0xFFE2E8DD),
-                  child: Center(child: Text('Map image could not be loaded')),
-                );
-              },
-            ),
-
-            // On desktop, keep the location input above the map.
-            // On mobile, it is already displayed above this widget.
-
-            // The map image shows a sample location from Figma.
-            Positioned(
-              bottom: 8,
-              left: 8,
-              right: 8,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryGreen.withValues(alpha: 0.90),
-                  borderRadius: BorderRadius.circular(6),
+            Expanded(
+              child: TextFormField(
+                controller: _latitudeController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true, signed: true,
                 ),
-                child: Text(
-                  'Demo map: Iowa, USA • Not your farm location',
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  style: _body(compact ? 10 : 11, color: Colors.white),
+                onChanged: (_) => setState(() => _selectedFarmPoint = null),
+                style: _body(13),
+                decoration: _inputDecoration('Latitude (-90 to 90)').copyWith(
+                  labelText: 'Latitude',
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: TextFormField(
+                controller: _longitudeController,
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true, signed: true,
+                ),
+                onChanged: (_) => setState(() => _selectedFarmPoint = null),
+                style: _body(13),
+                decoration: _inputDecoration('Longitude (-180 to 180)').copyWith(
+                  labelText: 'Longitude',
                 ),
               ),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 9),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: OutlinedButton.icon(
+            onPressed: _applyTypedCoordinates,
+            icon: const Icon(Icons.place_outlined, size: 17),
+            label: const Text('Apply coordinates'),
+          ),
+        ),
+      ],
     );
   }
 
@@ -626,8 +835,17 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
         ? null
         : (_areaUnit == 'Hectares' ? amount * 2.471053814671653 : amount);
 
+    final country = _countryValue;
+    final governorate = _governorateController.text.trim();
+
     if (_farmNameController.text.trim().isEmpty ||
-        _locationController.text.trim().isEmpty ||
+        country.isEmpty ||
+        governorate.isEmpty ||
+        _selectedFarmPoint == null ||
+        !FarmProfileModel.coordinatesAreValid(
+          _selectedFarmPoint?.latitude,
+          _selectedFarmPoint?.longitude,
+        ) ||
         acres == null ||
         !acres.isFinite ||
         acres <= 0 ||
@@ -636,15 +854,27 @@ class _FarmProfileFormState extends State<FarmProfileForm> {
         _selectedWaterSource == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please complete all farm profile fields correctly.'),
+          content: Text('Enter country, governorate and all farm fields, then select a valid farm point.'),
         ),
       );
       return;
     }
 
+    final city = _locationController.text.trim();
+    final location = <String>[
+      if (city.isNotEmpty && city.toLowerCase() != governorate.toLowerCase())
+        city,
+      governorate,
+      country,
+    ].join(', ');
+
     final farmProfile = FarmProfileModel(
       farmName: _farmNameController.text.trim(),
-      location: _locationController.text.trim(),
+      location: location,
+      country: country,
+      governorate: governorate,
+      latitude: _selectedFarmPoint!.latitude,
+      longitude: _selectedFarmPoint!.longitude,
       cultivatedArea: acres,
       soilType: _selectedSoilType!,
       currentCrop: _selectedCrop!,

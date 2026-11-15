@@ -10,6 +10,10 @@ class StrategySummaryModel {
     required this.farmLocation,
     this.cultivatedArea,
     this.areaUnit = 'Acres',
+    this.country,
+    this.governorate,
+    this.latitude,
+    this.longitude,
     this.soilType,
     this.currentCrop,
     this.farmPriorities,
@@ -22,6 +26,15 @@ class StrategySummaryModel {
 
   /// Original area unit; area value is stored as normalized acres.
   final String areaUnit;
+
+  final String? country;
+  final String? governorate;
+
+  /// Selected farm point in WGS84 decimal degrees, when available.
+  final double? latitude;
+  final double? longitude;
+  bool get hasCoordinates =>
+      FarmProfileModel.coordinatesAreValid(latitude, longitude);
 
   double? get displayArea => cultivatedArea == null
       ? null
@@ -59,6 +72,10 @@ class StrategySummaryModel {
               : 'Location not set'),
       cultivatedArea: p?.cultivatedArea,
       areaUnit: p?.areaUnit ?? 'Acres',
+      country: p?.country,
+      governorate: p?.governorate,
+      latitude: p?.latitude,
+      longitude: p?.longitude,
       soilType: p?.soilType,
       currentCrop: p?.currentCrop,
       farmPriorities: priorities is FarmPrioritiesModel ? priorities : null,
@@ -71,6 +88,10 @@ class StrategySummaryModel {
     'farmLocation': farmLocation,
     'cultivatedArea': cultivatedArea,
     'areaUnit': areaUnit,
+    'country': country,
+    'governorate': governorate,
+    'latitude': latitude,
+    'longitude': longitude,
     'soilType': soilType,
     'currentCrop': currentCrop,
     'farmPriorities': farmPriorities?.toJson(),
@@ -85,6 +106,10 @@ class StrategySummaryModel {
       farmLocation: json['farmLocation'] as String,
       cultivatedArea: (json['cultivatedArea'] as num?)?.toDouble(),
       areaUnit: json['areaUnit'] == 'Hectares' ? 'Hectares' : 'Acres',
+      country: json['country'] as String?,
+      governorate: json['governorate'] as String?,
+      latitude: (json['latitude'] as num?)?.toDouble(),
+      longitude: (json['longitude'] as num?)?.toDouble(),
       soilType: json['soilType'] as String?,
       currentCrop: json['currentCrop'] as String?,
       farmPriorities: priorities is Map<String, dynamic>
