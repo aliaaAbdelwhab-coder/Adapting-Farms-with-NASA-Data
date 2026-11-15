@@ -1,0 +1,71 @@
+{
+  "evidence": [
+    {
+      "title": "Crop Rotation An Approach To Secure Future Food by Samiha Ouda, Abd El-Hafeez Zohry, Tahany Noreldin",
+      "url": "https://www.scribd.com/document/696177571/Crop-Rotation-an-Approach-to-Secure-Future-Food-by-Samiha-Ouda-Abd-El-Hafeez-Zohry-Tahany-Noreldin-Z-lib-org",
+      "key_points": [
+        "Crop rotation improves soil structure and nutrient content while maintaining sustainability.",
+        "It increases land productivity compared to monoculture.",
+        "Scheduling irrigation based on climate variability can maximize water usage."
+      ],
+      "relevance": "high"
+    },
+    {
+      "title": "Assessing crop rotation as a climate-smart agriculture ...",
+      "url": "https://academicjournals.org/journal/AJAR/article-full-text-pdf/901F89F73878.pdf",
+      "key_points": [
+        "Maize following soybean on sandy soils yields best results.",
+        "Rainfall timing, not just totals, drives yield; rotations should align with rainfall patterns.",
+        "Organic amendments and cover crops can buffer erratic rainfall."
+      ],
+      "relevance": "high"
+    },
+    {
+      "title": "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review",
+      "url": "https://www.mdpi.com/2073-4395/15/8/1966",
+      "key_points": [
+        "Legume inclusion boosts soil organic matter and carbon up to 18%.",
+        "Legumes improve phosphorus availability and soil structure.",
+        "Crop rotation enhances soil health and biodiversity."
+      ],
+      "relevance": "high"
+    },
+    {
+      "title": "Chapter 4 - Sustainable crop rotations",
+      "url": "https://www.fao.org/4/v9926e/v9926e06.htm",
+      "key_points": [
+        "Egypt commonly uses a 3-year rotation of cotton, maize, rice.",
+        "Rotations vary by rainfall; low rainfall areas use more fallow.",
+        "Typical crop sequences in Egypt are documented."
+      ],
+      "relevance": "medium"
+    },
+    {
+      "title": "Crop yield and water use efficiency in response to long-term diversified crop rotations",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9585309",
+      "key_points": [
+        "Diverse crop rotations increase soil water content across layers.",
+        "Certain sequences (PWFW) retain more water than monoculture.",
+        "Higher pre-planting soil moisture can benefit subsequent crops."
+      ],
+      "relevance": "high"
+    },
+    {
+      "title": "Crop Rotation: A Sustainable Practice for Soil and Water Conservation - Agriculture Notes by Agriculture.Institute",
+      "url": "https://agriculture.institute/rain-fed-farming/crop-rotation-soil-water-conservation",
+      "key_points": [
+        "Cover crops and crop residues build organic matter, enhancing water retention.",
+        "Legume rotations reduce need for synthetic nitrogen and lower GHG emissions.",
+        "Water-limited environments benefit from rotations that complement water use patterns."
+      ],
+      "relevance": "high"
+    }
+  ],
+  "evidence_gaps": [
+    "Exact water requirement per crop for the farm's soil type",
+    "Detailed irrigation scheduling for maize under current climate",
+    "Specific crop rotation sequences tested on sandy loam in Egypt",
+    "Yield outcomes for maize following different rotations in this region",
+    "Soil salinity impact on crop rotation choices"
+  ]
+}

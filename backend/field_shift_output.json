@@ -1,0 +1,324 @@
+{
+  "farm": {
+    "farmName": "Demo Farm",
+    "location": "Damanhur, Beheira, Egypt",
+    "latitude": 31.04,
+    "longitude": 30.47,
+    "cultivatedArea": 5.0,
+    "areaUnit": "Acres",
+    "soilType": "Sandy loam",
+    "soilPH": 7.5,
+    "soilSalinityEC": 1.2,
+    "soilOrganicMatter": 1.8,
+    "currentCrop": "Maize",
+    "previousWinterCrop": "Wheat",
+    "cropHistory": [
+      {
+        "crop": "Wheat",
+        "season": "Winter",
+        "year": 2024
+      },
+      {
+        "crop": "Maize",
+        "season": "Summer",
+        "year": 2024
+      },
+      {
+        "crop": "Wheat",
+        "season": "Winter",
+        "year": 2025
+      },
+      {
+        "crop": "Maize",
+        "season": "Summer",
+        "year": 2025
+      }
+    ],
+    "plantingDate": "2026-05-01",
+    "expectedHarvestDate": "2026-09-15",
+    "waterSource": "Nile irrigation canal",
+    "irrigationMethod": "Surface irrigation",
+    "irrigationFrequency": "Every 10 days",
+    "availableWaterAmount": 3000,
+    "availableWaterUnit": "m3 per acre per season",
+    "farmerGoal": [
+      "Improve soil health",
+      "Maintain crop productivity",
+      "Reduce water consumption"
+    ],
+    "goalPriority": [
+      "Improve soil health",
+      "Maintain crop productivity",
+      "Reduce water consumption"
+    ]
+  },
+  "climate_summary": {
+    "period": "20250101 to 20251231",
+    "valid_daily_records": 365,
+    "missing_values": {
+      "T2M": 0,
+      "T2M_MAX": 0,
+      "T2M_MIN": 0,
+      "PRECTOTCORR": 0
+    },
+    "annual": {
+      "average_temperature_c": 22.73,
+      "highest_daily_max_temperature_c": 43.64,
+      "lowest_daily_min_temperature_c": 5.63,
+      "total_precipitation_mm": 62.51
+    },
+    "monthly": [
+      {
+        "month": 1,
+        "mean_temperature_c": 15.42,
+        "precipitation_mm": 1.71,
+        "mean_daily_max_temperature_c": 22.11,
+        "mean_daily_min_temperature_c": 10.51
+      },
+      {
+        "month": 2,
+        "mean_temperature_c": 14.03,
+        "precipitation_mm": 5.01,
+        "mean_daily_max_temperature_c": 20.15,
+        "mean_daily_min_temperature_c": 9.49
+      },
+      {
+        "month": 3,
+        "mean_temperature_c": 18.92,
+        "precipitation_mm": 2.5,
+        "mean_daily_max_temperature_c": 27.34,
+        "mean_daily_min_temperature_c": 12.14
+      },
+      {
+        "month": 4,
+        "mean_temperature_c": 20.78,
+        "precipitation_mm": 2.2,
+        "mean_daily_max_temperature_c": 29.01,
+        "mean_daily_min_temperature_c": 14.01
+      },
+      {
+        "month": 5,
+        "mean_temperature_c": 25.01,
+        "precipitation_mm": 6.97,
+        "mean_daily_max_temperature_c": 33.61,
+        "mean_daily_min_temperature_c": 17.42
+      },
+      {
+        "month": 6,
+        "mean_temperature_c": 27.53,
+        "precipitation_mm": 9.9,
+        "mean_daily_max_temperature_c": 36.26,
+        "mean_daily_min_temperature_c": 19.96
+      },
+      {
+        "month": 7,
+        "mean_temperature_c": 30.07,
+        "precipitation_mm": 1.5,
+        "mean_daily_max_temperature_c": 38.95,
+        "mean_daily_min_temperature_c": 22.63
+      },
+      {
+        "month": 8,
+        "mean_temperature_c": 30.1,
+        "precipitation_mm": 0.0,
+        "mean_daily_max_temperature_c": 38.09,
+        "mean_daily_min_temperature_c": 24.03
+      },
+      {
+        "month": 9,
+        "mean_temperature_c": 27.45,
+        "precipitation_mm": 10.99,
+        "mean_daily_max_temperature_c": 35.04,
+        "mean_daily_min_temperature_c": 21.82
+      },
+      {
+        "month": 10,
+        "mean_temperature_c": 24.37,
+        "precipitation_mm": 1.13,
+        "mean_daily_max_temperature_c": 32.04,
+        "mean_daily_min_temperature_c": 18.9
+      },
+      {
+        "month": 11,
+        "mean_temperature_c": 21.92,
+        "precipitation_mm": 11.24,
+        "mean_daily_max_temperature_c": 28.74,
+        "mean_daily_min_temperature_c": 17.05
+      },
+      {
+        "month": 12,
+        "mean_temperature_c": 16.5,
+        "precipitation_mm": 9.36,
+        "mean_daily_max_temperature_c": 22.38,
+        "mean_daily_min_temperature_c": 12.27
+      }
+    ]
+  },
+  "research_results": [
+    {
+      "title": "Crop Rotation An Approach To Secure Future Food by Samiha Ouda, Abd El-Hafeez Zohry, Tahany Noreldin | PDF | Soil | Water Resources",
+      "url": "https://www.scribd.com/document/696177571/Crop-Rotation-an-Approach-to-Secure-Future-Food-by-Samiha-Ouda-Abd-El-Hafeez-Zohry-Tahany-Noreldin-Z-lib-org",
+      "content": "This document discusses crop rotation and its importance for food security. It presents information on crop rotations used in different agro-climatic zones of Egypt. Crop rotation improves soil structure and nutrient content while maintaining soil sustainability. It increases land productivity compared to monoculture. The document also examines scheduling irrigation to maximize water usage for different crop rotations based on analyzing spatial and temporal variability in climate factors like [...] factors like temperature and rainfall across Egypt. [...] Scribd\n\n# Crop Rotation An Approach To Secure Future Food by Samiha Ouda, Abd El-Hafeez Zohry, Tahany Noreldin",
+      "score": 0.42345798
+    },
+    {
+      "title": "Assessing crop rotation as a climate-smart agriculture ...",
+      "url": "https://academicjournals.org/journal/AJAR/article-full-text-pdf/901F89F73878.pdf",
+      "content": "on sandy soils with maize following soybean being the most effective system. However, season, and especially rainfall variability, remains the dominant driver of yield outcomes. These findings highlight the need for CSA strategies that integrate rotational benefits with management practices based on rainfall timing, rather than annual totals. Aligning planting strategies with shifting rainfall patterns will be critical to sustaining productivity on sandy soils under a changing climate. CONFLICT [...] it does not alter crop sensitivity to rainfall timing. This indicates that rotations and rainfall adaption should be complementary strategies. Enhancing soil quality through organic amendments, mulching or planting winter cover crops to use excess water and increase organic matter together with altered planting times, could buffer the effects of erratic rainfall patterns (Dabney et al., 2001; Moore, 2023). Conclusion Crop rotation as a CSA strategy can enhance maize productivity on sandy soils [...] soils have very little organic matter (<1%), silt and clay and are prone to wind erosion, soil compaction and infertility (Beukes et al., 2019; Strauss et al., 2021). However, a layer of clay at a depth of 1.50 to 2.00 m prevents water drainage, forming a water table allowing rainwater to be effectively captured and stored (Nel and Loubser, 2004). A field trial comparing different crop rotational systems (maize-cover crop-soybean (MCS), maize-soybean-maize (MS) and maize-maize-soybean (MMS))",
+      "score": 0.41780585
+    },
+    {
+      "title": "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review",
+      "url": "https://www.mdpi.com/2073-4395/15/8/1966",
+      "content": "legume crops such as lentil or vetch are often inserted into a rotational system to maintain soil fertility without recourse to chemical fertilisers [39,40]. Besides the fixed nitrogen, legumes can also improve the availability of phosphorus in soil, improve soil structure, and increase biodiversity. Studies have found that legumes can increase the amount of organic matter and enhance water infiltration rates, leading to improved soil health and reduced erosion. Legume crop rotations promote [...] rotation and its contribution to promoting sustainable farming practices, such as legume integration and cover cropping. It is based on a thematic literature review of peer-reviewed studies published between 1984 and 2025. We found that crop rotation can significantly improve soil structure and organic matter content and enhance nutrient cycling. Furthermore, soil organic carbon increased by up to 18% when legumes were included in rotations compared to monoculture systems in Europe, while also [...] | Aspect | Monocropping | Crop Rotation |\n --- \n| Soil Health and Fertility | Lower soil health index [108,109]. | Improves soil health by 45%; adds organic matter [108,109]. |\n| Nutrient depletion reduced microbial diversity [102,110]. | Improves soil fertility, biodiversity [102,110]. |\n| Degradation implied . | Stabilises yield across climates . |\n| Microbial and Soil Biodiversity | Lower bacterial diversity [112,113]. | Higher diversity in rotations like maize–alfalfa . |",
+      "score": 0.38058627
+    },
+    {
+      "title": "Chapter 4 - Sustainable crop rotations",
+      "url": "https://www.fao.org/4/v9926e/v9926e06.htm",
+      "content": "| Egypt | | Usually 3-year rotation including cotton, maize, rice | |\n| Morocco: | |  | |\n|  | low rainfall | 25% fallow (has grazing value) | |\n| 75% continuous cereal | |\n|  | high rainfall | 15% continuous cereal | |\n| 79% grain legumes | |\n| 15% fallow (grazed) | |\n| Tunisia | | 16% fallow-fallow-cereal | |\n| 42% fallow-cereal | |\n| 17% cereal-cereal | |\n| 14% cereal-hay crops | |\n| 11 % cereal-grain legumes | |\n| Cyprus | | 20% fallow | |\n| 6% continuous cereal | | [...] | Egypt | | Usually 3-year rotation including cotton, maize, rice | |\n| Morocco: | |  | |\n|  | low rainfall | 25% fallow (has grazing value) | |\n| 75% continuous cereal | |\n|  | high rainfall | 15% continuous cereal | |\n| 79% grain legumes | |\n| 15% fallow (grazed) | |\n| Tunisia | | 16% fallow-fallow-cereal | |\n| 42% fallow-cereal | |\n| 17% cereal-cereal | |\n| 14% cereal-hay crops | |\n| 11 % cereal-grain legumes | |\n| Cyprus | | 20% fallow | |\n| 6% continuous cereal | | [...] | Egypt | | Usually 3-year rotation including cotton, maize, rice | |\n| Morocco: | |  | |\n|  | low rainfall | 25% fallow (has grazing value) | |\n| 75% continuous cereal | |\n|  | high rainfall | 15% continuous cereal | |\n| 79% grain legumes | |\n| 15% fallow (grazed) | |\n| Tunisia | | 16% fallow-fallow-cereal | |\n| 42% fallow-cereal | |\n| 17% cereal-cereal | |\n| 14% cereal-hay crops | |\n| 11 % cereal-grain legumes | |\n| Cyprus | | 20% fallow | |\n| 6% continuous cereal | |",
+      "score": 0.36523023
+    },
+    {
+      "title": "Crop yield and water use efficiency in response to long-term diversified crop rotations",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9585309",
+      "content": "The results of our statistical analysis for soil water content in pre-planting and post-harvest periods indicated that soil water content in five different soil layers was significantly affected by the diversity of the crop rotation sequence ( Figure 2 ). The average (0-150 cm) before sowing water content was greater under the PWFW crop rotation sequence, which had 0.7% more water content than the FFFF, and had 0.4-48.5% more water content than the other crop rotation sequences. Soil water [...] ## References\n1. Álvaro-Fuentes J., Lampurlanés J., Cantero-Martínez C. (2009). Alternative crop rotations under Mediterranean no-tillage conditions: Biomass, grain yield, and water-use efficiency. Agron. J. 101, 1227 – 1233. doi: doi:10.2134/agronj2009.0077\n2. Attia A., Shapiro C., Kranz W., Mamo M., Mainz M. (2015). Improved yield and nitrogen use efficiency of corn following soybean in irrigated sandy loams. Soil sci. Soc. Am. J. 79, 1693 – 1703. doi: doi:10.2136/sssaj2015.05.0200 [...] (pre-crops and subsequent crops) so more precipitation can be absorbed and stored in the soil for subsequent crop production (Nielsen and Vigil, 2017). Greater fallow soil water accumulation results in differences in soil water at planting between diverse crop rotation systems (Gan et al., 2016). Soil water content before sowing were affected by many factors, such as precipitation in the fallow period, pre-crops type and management, weather conditions during the growing season, land cover and",
+      "score": 0.3351332
+    },
+    {
+      "title": "Crop Rotation: A Sustainable Practice for Soil and Water Conservation - Agriculture Notes by Agriculture.Institute",
+      "url": "https://agriculture.institute/rain-fed-farming/crop-rotation-soil-water-conservation",
+      "content": "Crop residues left behind by different crops decompose at varying rates, steadily building up organic matter in the soil. When cover crops are regularly part of a rotation, their residues increase soil organic matter, which feeds microbial growth and accelerates the release of nutrients as microbes die and decompose. This improved organic content enhances the soil’s ability to hold water and nutrients, support root growth, and resist compaction – all critical factors in rain-fed farming where [...] Sod-based rotations, particularly those incorporating perennial grasses, have shown potential for improved water retention and use efficiency without significantly compromising crop yield – making them a promising model for water-limited environments. Farmers in rain-fed regions, where every millimeter of rainfall counts, can gain the most from this approach by selecting crops that complement each other’s water use patterns across the season.\n\n## Economic and environmental benefits [...] On the environmental side, rotating crops with legumes also reduces greenhouse gas emissions by decreasing reliance on synthetic nitrogen fertilizers, whose production is highly energy-intensive. Crop rotation combined with legumes has the potential to improve both water quality and climate outcomes relative to monocultures, primarily through the legumes’ ability to fix nitrogen biologically from the air.\n\n## Crop rotation as indigenous technical knowledge",
+      "score": 0.2991052
+    }
+  ],
+  "strategy_output": {
+    "strategies": [
+      {
+        "name": "Maize–Soybean–Maize Rotation",
+        "crop_sequence": [
+          "Maize",
+          "Soybean",
+          "Maize"
+        ],
+        "seasons": [
+          "Summer",
+          "Winter",
+          "Summer"
+        ],
+        "rationale": "Inserting a legume (soybean) after a summer maize crop provides biological nitrogen fixation, reducing the need for synthetic nitrogen fertilizers. The legume’s root system improves soil structure and increases organic matter, while its residue enhances water infiltration for the following maize season.",
+        "expected_benefits": [
+          "Improved soil fertility and nitrogen status",
+          "Higher soil organic matter and water‑holding capacity",
+          "Potential reduction in fertilizer costs"
+        ],
+        "risks_and_uncertainties": [
+          "Soybean may not be fully adapted to the local temperature and rainfall pattern; yield could be lower than expected.",
+          "Soybean requires adequate winter irrigation; surface irrigation may be less efficient for a shallow crop.",
+          "Pest and disease pressure (e.g., soybean cyst nematode) could affect crop performance.",
+          "Market price for soybean may fluctuate, impacting profitability."
+        ],
+        "evidence_used": [
+          "Crop Rotation An Approach To Secure Future Food by Samiha Ouda, Abd El-Hafeez Zohry, Tahany Noreldin",
+          "Assessing crop rotation as a climate-smart agriculture ...",
+          "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review"
+        ]
+      },
+      {
+        "name": "Maize–Cover Crop–Maize Rotation",
+        "crop_sequence": [
+          "Maize",
+          "Cover Crop (Vetch or Ryegrass)",
+          "Maize"
+        ],
+        "seasons": [
+          "Summer",
+          "Winter",
+          "Summer"
+        ],
+        "rationale": "A winter cover crop provides continuous ground cover, suppresses weeds, and its residues decompose to build soil organic matter. This improves soil structure, reduces erosion, and enhances moisture retention for the subsequent maize crop.",
+        "expected_benefits": [
+          "Increased soil organic matter and microbial activity",
+          "Improved water infiltration and reduced runoff",
+          "Reduced need for tillage and associated labor"
+        ],
+        "risks_and_uncertainties": [
+          "Cover crops may compete for water during the early growing season of the next maize crop, especially under surface irrigation.",
+          "Management of cover crop termination (timing, method) is critical; improper termination could reduce maize yield.",
+          "Cover crop establishment may be affected by winter rainfall variability; low precipitation could limit growth.",
+          "Economic return from cover crops is indirect; farmer must weigh labor and potential loss of cash crop area."
+        ],
+        "evidence_used": [
+          "Crop Rotation: A Sustainable Practice for Soil and Water Conservation - Agriculture Notes by Agriculture.Institute",
+          "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review"
+        ]
+      },
+      {
+        "name": "Maize–Winter Wheat–Maize Rotation",
+        "crop_sequence": [
+          "Maize",
+          "Winter Wheat",
+          "Maize"
+        ],
+        "seasons": [
+          "Summer",
+          "Winter",
+          "Summer"
+        ],
+        "rationale": "Winter wheat occupies the cooler, wetter part of the year, reducing competition for summer water resources. Wheat’s deep root system improves soil structure and can help break up compacted layers, while its residue contributes to organic matter buildup for the next maize season.",
+        "expected_benefits": [
+          "Maintained crop productivity with a different grain crop",
+          "Improved soil structure and organic matter from wheat residue",
+          "Potential diversification of income streams"
+        ],
+        "risks_and_uncertainties": [
+          "Winter wheat yield may be lower than maize, affecting overall profitability.",
+          "The crop may require additional irrigation during dry spells; surface irrigation may be less efficient.",
+          "Pest and disease pressures differ between wheat and maize; management plans must be adapted.",
+          "Market demand for wheat versus maize must be verified locally."
+        ],
+        "evidence_used": [
+          "Crop Rotation An Approach To Secure Future Food by Samiha Ouda, Abd El-Hafeez Zohry, Tahany Noreldin",
+          "Chapter 4 - Sustainable crop rotations"
+        ]
+      }
+    ],
+    "overall_notes": [
+      "All strategies are based on general literature and climate data for the region; they are not site‑specific trials.",
+      "The NASA POWER data provide average temperature and precipitation but do not capture micro‑climate or soil moisture dynamics; actual irrigation scheduling should be verified locally.",
+      "Crop suitability (e.g., soybean, vetch, wheat) for the specific sandy loam, pH 7.5, and irrigation method (surface) has not been tested on Demo Farm; local agronomist input is required.",
+      "Market demand and price volatility for legumes or cover crops were not considered; economic feasibility should be assessed.",
+      "Water savings are qualitative; actual water use will depend on crop water requirements, irrigation efficiency, and rainfall during the growing season.",
+      "All strategies assume that the farmer can maintain the same irrigation frequency (every 10 days) and that the Nile canal supply is sufficient for the proposed rotations."
+    ]
+  },
+  "validation": {
+    "passed_basic_structure_check": true,
+    "checks": [
+      {
+        "strategy": "Maize–Soybean–Maize Rotation",
+        "has_at_least_two_crops": true,
+        "crop_and_season_counts_match": true
+      },
+      {
+        "strategy": "Maize–Cover Crop–Maize Rotation",
+        "has_at_least_two_crops": true,
+        "crop_and_season_counts_match": true
+      },
+      {
+        "strategy": "Maize–Winter Wheat–Maize Rotation",
+        "has_at_least_two_crops": true,
+        "crop_and_season_counts_match": true
+      }
+    ],
+    "warnings": [
+      "Strategy 1: a crop is repeated in the proposed sequence. This is a review flag, not an automatic agronomic rejection.",
+      "Strategy 1: first proposed crop is the same as the current crop; verify the intended rotation timing.",
+      "Strategy 2: a crop is repeated in the proposed sequence. This is a review flag, not an automatic agronomic rejection.",
+      "Strategy 2: first proposed crop is the same as the current crop; verify the intended rotation timing.",
+      "Strategy 3: a crop is repeated in the proposed sequence. This is a review flag, not an automatic agronomic rejection.",
+      "Strategy 3: first proposed crop is the same as the current crop; verify the intended rotation timing."
+    ],
+    "important_note": "These are structural checks only. They do not prove agronomic suitability. A local agronomist should verify crop calendars, soil constraints, and irrigation requirements."
+  }
+}
