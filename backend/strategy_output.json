@@ -1,0 +1,103 @@
+{
+  "strategies": [
+    {
+      "name": "Cereal‑Forage Integrated Rotation",
+      "crop_sequence": [
+        "Winter Wheat",
+        "Summer Alfalfa (forage)",
+        "Winter Wheat",
+        "Summer Maize"
+      ],
+      "seasons": [
+        "Winter 2026‑2027",
+        "Summer 2027",
+        "Winter 2027‑2028",
+        "Summer 2028"
+      ],
+      "rationale": "Introducing a high‑biomass forage (alfalfa) after wheat adds organic residues, improves soil structure and water‑holding capacity, and provides an additional market product. Returning to wheat after the forage reduces the yield penalty seen in continuous wheat, and the subsequent maize leverages the improved soil moisture for a water‑intensive summer crop.",
+      "expected_benefits": [
+        "Higher soil organic matter and crude protein in the topsoil",
+        "Improved water‑use efficiency of the wheat‑forage sequence",
+        "Diversified farm income through forage sales",
+        "Break of wheat‑specific pest and disease cycles"
+      ],
+      "risks_and_uncertainties": [
+        "Alfalfa’s deep rooting may increase irrigation demand during the hot summer; water availability must be confirmed.",
+        "Alfalfa performance in Egyptian sandy loam with moderate salinity is not documented in the cited sources; salt‑tolerant varieties may be required.",
+        "Market demand and price for forage in the region need verification.",
+        "Timing of alfalfa harvest must align with the start of the next wheat cycle to avoid delays."
+      ],
+      "evidence_used": [
+        "Cereal-forage crop rotations and irrigation treatment effect on water use efficiency and crops sustainability in Mediterranean environment",
+        "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review"
+      ]
+    },
+    {
+      "name": "Legume‑Enhanced Wheat Rotation",
+      "crop_sequence": [
+        "Winter Wheat",
+        "Summer Soybean",
+        "Winter Wheat"
+      ],
+      "seasons": [
+        "Winter 2026‑2027",
+        "Summer 2027",
+        "Winter 2027‑2028"
+      ],
+      "rationale": "A summer legume (soybean) supplies biological nitrogen fixation, reducing synthetic N fertilizer needs for the following wheat crop. The rotation also improves soil moisture retention and mineral nitrogen dynamics, directly addressing the farmer’s priority of water‑efficiency while enhancing soil fertility.",
+      "expected_benefits": [
+        "Reduced nitrogen fertilizer requirement for wheat",
+        "Enhanced soil moisture retention after the legume phase",
+        "Improved nitrogen use efficiency and lower leaching risk",
+        "Increased biodiversity and break of wheat‑specific pests"
+      ],
+      "risks_and_uncertainties": [
+        "Soybean may require more irrigation than the allocated 5,000 m³ in a dry summer; water budgeting is essential.",
+        "Heat‑tolerant soybean varieties must be selected for temperatures >35 °C typical of Egyptian midsummer.",
+        "Potential market constraints for soybean grain in the local area.",
+        "Legume residues may need proper incorporation to avoid nitrogen immobilization before wheat planting."
+      ],
+      "evidence_used": [
+        "Frontiers | How Does Crop Rotation Influence Soil Moisture, Mineral Nitrogen, and Nitrogen Use Efficiency?",
+        "Utilizing Different Crop Rotation Systems for Agricultural and Environmental Sustainability: A Review"
+      ]
+    },
+    {
+      "name": "Diversified Wheat‑Maize‑Legume Rotation",
+      "crop_sequence": [
+        "Winter Wheat",
+        "Summer Maize",
+        "Winter Lentil (legume)"
+      ],
+      "seasons": [
+        "Winter 2026‑2027",
+        "Summer 2027",
+        "Winter 2027‑2028"
+      ],
+      "rationale": "A three‑year cycle that alternates a high‑water‑use cereal (maize) with a low‑water‑use legume (lentil) after wheat spreads water demand across seasons. Lentil adds nitrogen, improves organic matter, and fits the cooler winter period, while maize takes advantage of the residual soil moisture from the preceding wheat season.",
+      "expected_benefits": [
+        "Balanced seasonal water use, reducing peak irrigation demand",
+        "Increased soil organic carbon from legume residues",
+        "Enhanced resilience to erratic rainfall through diversified crop water needs",
+        "Reduced pest and disease pressure by breaking monoculture cycles"
+      ],
+      "risks_and_uncertainties": [
+        "Lentil’s sensitivity to high winter temperatures; selection of early‑maturing, heat‑tolerant varieties is required.",
+        "Maize may still demand substantial irrigation; verify that the 5,000 m³ allocation can meet its evapotranspiration needs.",
+        "Limited local experience with lentil in the Nile Delta; agronomic practices need adaptation.",
+        "Potential competition for labor and equipment during overlapping harvest windows."
+      ],
+      "evidence_used": [
+        "Crop yield and water use efficiency in response to long-term diversified crop rotations",
+        "Assessing crop rotation as a climate-smart agriculture strategy on ..."
+      ]
+    }
+  ],
+  "overall_notes": [
+    "NASA POWER data confirms a warm Mediterranean climate with limited rainfall (≈62 mm yr⁻¹) and high solar radiation, indicating strong reliance on irrigation.",
+    "All recommendations assume that the listed crops (alfalfa, soybean, lentil, vetch) have suitable varieties for the Nile Delta and that seed/market access is available; local trials are needed.",
+    "Water budgeting for each crop is not quantified; the farmer should model irrigation needs against the 5,000 m³ per‑season allocation.",
+    "Soil salinity (EC 1.1 dS m⁻¹) is moderate; salt‑tolerant cultivars may be required, especially for legumes.",
+    "Evidence cited provides general benefits of the rotation types in Mediterranean‑type environments but does not include field data from Egypt; local agronomist verification is essential."
+  ]
+}

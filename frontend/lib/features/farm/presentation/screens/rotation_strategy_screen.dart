@@ -453,15 +453,30 @@ class _RotationStrategyScreenState extends State<RotationStrategyScreen> {
                 ),
                 const SizedBox(height: 16),
                 _detail('Crop sequence', plan.crops.join(' → ')),
-                _detail('Match', '${plan.matchPercent}%'),
+                _detail(
+                  'Match',
+                  plan.matchPercent == null
+                      ? 'Not available'
+                      : '${plan.matchPercent}%',
+                ),
                 _detail(
                   'Water demand',
-                  '${plan.waterDemandLabel} (${plan.waterDemandPercent}%)',
+                  plan.waterDemandPercent == null
+                      ? (plan.waterDemandLabel ?? 'Not available')
+                      : '${plan.waterDemandLabel ?? 'Not available'} '
+                          '(${plan.waterDemandPercent}%)',
                 ),
-                _detail('Soil health', '${plan.soilHealthScore}/100'),
+                _detail(
+                  'Soil health',
+                  plan.soilHealthScore == null
+                      ? 'Not available'
+                      : '${plan.soilHealthScore}/100',
+                ),
                 _detail(
                   'Climate resilience',
-                  '${plan.climateResilienceScore}/100',
+                  plan.climateResilienceScore == null
+                      ? 'Not available'
+                      : '${plan.climateResilienceScore}/100',
                 ),
                 _detail('Biomass nitrogen', plan.biomassNitrogen),
                 _detail('Root depth', plan.rootingDepth),
@@ -587,7 +602,9 @@ class _RotationPlanCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '${plan.matchPercent}% Match',
+                plan.matchPercent == null
+                    ? 'Match pending'
+                    : '${plan.matchPercent}% Match',
                 style: _outfit(15, weight: FontWeight.w700),
               ),
             ],
@@ -627,14 +644,16 @@ class _RotationPlanCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Water Need: ${plan.waterDemandLabel}',
+                  'Water Need: ${plan.waterDemandLabel ?? 'Not available'}',
                   style: _figtree(12, color: AppColors.textSecondary),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
-                '${plan.waterDemandPercent}%',
+                plan.waterDemandPercent == null
+                    ? '—'
+                    : '${plan.waterDemandPercent}%',
                 style: _figtree(12, weight: FontWeight.w700),
               ),
             ],
@@ -643,16 +662,26 @@ class _RotationPlanCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
-              value: plan.waterDemandPercent / 100,
+              value: ((plan.waterDemandPercent ?? 0) / 100).clamp(0.0, 1.0),
               minHeight: 7,
               backgroundColor: AppColors.borderSlate,
               color: accentColor,
             ),
           ),
           const SizedBox(height: 12),
-          _metric('Soil Health Score', '${plan.soilHealthScore}/100'),
+          _metric(
+            'Soil Health Score',
+            plan.soilHealthScore == null
+                ? 'Not available'
+                : '${plan.soilHealthScore}/100',
+          ),
           const SizedBox(height: 8),
-          _metric('Climate Resilience', '${plan.climateResilienceScore}/100'),
+          _metric(
+            'Climate Resilience',
+            plan.climateResilienceScore == null
+                ? 'Not available'
+                : '${plan.climateResilienceScore}/100',
+          ),
           const Spacer(),
           Row(
             children: [
