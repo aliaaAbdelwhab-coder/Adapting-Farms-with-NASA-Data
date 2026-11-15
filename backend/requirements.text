@@ -9,3 +9,4 @@ langgraph
 pandas
 langchain_tavily
 scipy
+fastapi
